@@ -1,4 +1,6 @@
 <p align="center"><img src="https://github.com/pci2676/post-for-blog/blob/master/img/common/algorithm.png?raw=true" width="120">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <img src="https://github.com/pci2676/post-for-blog/blob/master/img/common/java.png?raw=true" width="120"></p>
+
+
 # 알고리즘
 
 사용언어 : JAVA
@@ -14,14 +16,14 @@ JAVA만을 이용하여 알고리즘을 공부하고 풀이한 내용을 포스�
 
 ## 포스팅한 문제 리스트
 
-블로그에도 볼 수 있습니다!
+[블로그](https://bottom-to-top.tistory.com/category/스터디/알고리즘)에도 볼 수 있습니다!
 
-[블로그로 가기](https://bottom-to-top.tistory.com/category/스터디/알고리즘)
+
 
 ### Programmers  
 
  * [여행경로](AlgorithmPost/Programmers/여행경로.md)
- * 
+ * [가장 먼 노드](AlgorithmPost/Programmers/가장_먼_노드.md)
 
 ### Baekjoon  
 
