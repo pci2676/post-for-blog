@@ -16,7 +16,7 @@ JAVA만을 이용하여 알고리즘을 공부하고 풀이한 내용을 포스�
 
 ## 포스팅한 문제 리스트
 
-[블로그](https://bottom-to-top.tistory.com/category/스터디/알고리즘)에도 볼 수 있습니다!
+[블로그](https://bottom-to-top.tistory.com/category/스터디/알고리즘)에서도 볼 수 있습니다!
 
 
 
@@ -24,6 +24,7 @@ JAVA만을 이용하여 알고리즘을 공부하고 풀이한 내용을 포스�
 
  * [여행경로](AlgorithmPost/Programmers/여행경로.md)
  * [가장 먼 노드](AlgorithmPost/Programmers/가장_먼_노드.md)
+ * [베스트 앨범](AlgorithmPost/Programmers/베스트_앨범.md)
 
 ### Baekjoon  
 
