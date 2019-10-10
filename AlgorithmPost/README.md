@@ -30,4 +30,6 @@ JAVA만을 이용하여 알고리즘을 공부하고 풀이한 내용을 포스�
 
 ### Baekjoon  
 
+- [블랙잭](../AlgorithmPost/BaekJoon/블랙잭.md)
+
 ### SWEA  
