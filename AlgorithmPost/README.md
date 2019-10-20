@@ -21,12 +21,17 @@ JAVA만을 이용하여 알고리즘을 공부하고 풀이한 내용을 포스�
 
 ### Programmers  
 
- * [여행경로](../AlgorithmPost/Programmers/여행경로.md)
- * [가장 먼 노드](../AlgorithmPost/Programmers/가장_먼_노드.md)
- * [베스트 앨범](../AlgorithmPost/Programmers/베스트_앨범.md)
- * [체육복](../AlgorithmPost/Programmers/체육복.md)
- * [프린터](../AlgorithmPost/Programmers/프린터.md)
- * [순위](../AlgorithmPost/Programmers/순위.md)
+ * [그래프]()
+   - [가장 먼 노드](../AlgorithmPost/Programmers/가장_먼_노드.md)
+   - [순위](../AlgorithmPost/Programmers/순위.md)
+ * [BFS/DFS](https://programmers.co.kr/learn/courses/30/parts/12421)
+   - [여행경로](../AlgorithmPost/Programmers/여행경로.md)
+ * [스택/큐](https://programmers.co.kr/learn/courses/30/parts/12081)
+   - [프린터](../AlgorithmPost/Programmers/프린터.md)
+ * [해시](https://programmers.co.kr/learn/courses/30/parts/12077)
+   - [베스트 앨범](../AlgorithmPost/Programmers/베스트_앨범.md)
+ * [탐욕법](https://programmers.co.kr/learn/courses/30/parts/12244)
+   - [체육복](../AlgorithmPost/Programmers/체육복.md)
 
 ### Baekjoon  
 
