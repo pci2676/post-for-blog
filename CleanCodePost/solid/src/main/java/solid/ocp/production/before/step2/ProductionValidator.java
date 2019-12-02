@@ -18,7 +18,7 @@ public class ProductionValidator {
                 throw new IllegalArgumentException("지역 상품의 이름은 20글자보다 길어야 합니다.");
             }
         }
-        //... 계속해서 상품의 옵션이 추가되고 해당 검증 로직이 추가 된다면??
+        //... 계속해서 상품의 옵션이 추가되고 해당 검증 로직이 추가/삭제/변경 된다면??
 
     }
 }
