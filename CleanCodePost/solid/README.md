@@ -2,7 +2,7 @@
 
 ### 목표
 
-[SOLID]([https://ko.wikipedia.org/wiki/SOLID_(%EA%B0%9D%EC%B2%B4_%EC%A7%80%ED%96%A5_%EC%84%A4%EA%B3%84)](https://ko.wikipedia.org/wiki/SOLID_(객체_지향_설계))에 대한 설명을 하는 글은 여러 블로그에 소개가 되어있습니다.
+[SOLID](https://ko.wikipedia.org/wiki/SOLID_(%EA%B0%9D%EC%B2%B4_%EC%A7%80%ED%96%A5_%EC%84%A4%EA%B3%84))에 대한 설명을 하는 글은 여러 블로그에 소개가 되어있습니다.
 
 하지만 대부분의 글이 개념적인 설명을 위주로 하고 있을뿐더러, 너무 추상적이라 이해하기 어렵다는 생각을 했습니다. 
 
