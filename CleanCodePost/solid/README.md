@@ -46,7 +46,7 @@ public class Production {
 
 public class ProductionUpdateService {
 
-    public void updatePrice(Production production, int price) {
+    public void update(Production production, int price) {
         //validate price
         validatePrice(price);
 
@@ -67,7 +67,7 @@ public class ProductionUpdateService {
 
 상품의 역할을 하는 `Production` 의 책임은
 
-- updatePrice() : 상품의 가격을 변경한다.
+- update() : 상품의 정보를 변경하는 `Product`의 책임을 호출 한다.
 
 상품의 업데이트를 하는 역할인 `ProductionUpdateService` 의 책임은
 
@@ -76,9 +76,9 @@ public class ProductionUpdateService {
 
 입니다.
 
-`ProductionUpdateService`의 역할은 `Product`의 내용을 변경하는 책임을 가지고 있습니다.
+`ProductionUpdateService`의 역할은 `Product`의 내용을 변경하는 책임을 호출하는 책임을 가지고 있습니다.
 
-즉, updatePrice()의 책임은 `ProductionUpdateService`의 책임으로 볼 수 있습니다.
+즉, update()의 책임은 `ProductionUpdateService`의 책임으로 볼 수 있습니다.
 
 하지만 가격의 유효성을 검증하는 validatePrice()는 `ProductionUpdateService` 의 책임이라고 볼 수 있을까요?
 
@@ -115,7 +115,7 @@ public class Production {
 
 public class ProductionUpdateService {
 
-    public void updatePrice(Production production, int price) {
+    public void update(Production production, int price) {
         //update price
         production.updatePrice(price);
     }
