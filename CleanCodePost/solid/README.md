@@ -3,9 +3,7 @@
 ### 목표
 
 [SOLID](https://ko.wikipedia.org/wiki/SOLID_(%EA%B0%9D%EC%B2%B4_%EC%A7%80%ED%96%A5_%EC%84%A4%EA%B3%84))에 대한 설명을 하는 글은 여러 블로그에 소개가 되어있습니다.
-
 하지만 대부분의 글이 개념적인 설명을 위주로 하고 있을뿐더러, 너무 추상적이라 이해하기 어렵다는 생각을 했습니다. 
-
 그래서 저는 이 글을
 
 - 실제로 코드상에서 어떠한 방식으로 적용되는지
@@ -64,7 +62,6 @@ public class ProductionUpdateService {
 ```
 
 상품의 역할을 하는 `Production` 과 상품의 가격을 변경하는 `ProductionUpdateService` 가 있습니다.
-
 상품의 역할을 하는 `Production` 의 책임은
 
 - update() : 상품의 정보를 변경하는 `Product`의 책임을 호출 한다.
@@ -77,13 +74,9 @@ public class ProductionUpdateService {
 입니다.
 
 `ProductionUpdateService`의 역할은 `Product`의 내용을 변경하는 책임을 호출하는 책임을 가지고 있습니다.
-
 즉, update()의 책임은 `ProductionUpdateService`의 책임으로 볼 수 있습니다.
-
 하지만 가격의 유효성을 검증하는 validatePrice()는 `ProductionUpdateService` 의 책임이라고 볼 수 있을까요?
-
 가격의 유효성을 검증하는 작업은 실제 가격의 정보를 바꾸는 `Product`의 책임으로 보는게 더 맞는것 같다고 생각합니다.
-
 이를 토대로 유효성 검증이라는 책임을 `Product`로 옮긴 코드는 다음과 같습니다.
 
 
@@ -167,7 +160,6 @@ public class Production {
 ```
 
 상품객체에 `option` 이라는 멤버 변수가 생겼습니다.
-
 `option` 에 따른 검증 작업을 진행해야하는 요구사항이 존재한다고 가정 후 코드를 작성했다고 합시다.
 
 
@@ -234,9 +226,7 @@ public class ProductionValidator {
   - 기존 옵션에 대한 검증 작업이 통합
 
 코드의 수정이 빈번하게 일어나고 `if...else if` 의 향연이 눈앞에 펼쳐질 것 같습니다!
-
 유지보수가 하기 힘들어지고 코드를 파악하기 힘들어 질것입니다.
-
 다시말해 변경에 너무 취약한 구조를 가지고 있습니다.
 
 
@@ -328,11 +318,8 @@ public class ProductValidator {
 ```
 
 위와 같은 코드가 작성될 수 있을 것 입니다.
-
-이러한 구조에서 새로운 옵션이 생성되어 검증 로직이 추가되야 할 때
-
+이러한 구조에서 새로운 옵션이 생성되어 검증 로직이 추가되야 할 때\
 OCP를 지키지 않은 구조와 달리 `ProductValidator` 의 `validate()` 의 수정 없이
-
 해당 검증을 담당할 객체를  추가하여 요구사항을 충족시킬 수 있습니다.
 
 따라서 코드의 변경 없이 확장 가능한 구조가 되었습니다.
@@ -344,9 +331,15 @@ OCP를 지키지 않은 구조와 달리 `ProductValidator` 의 `validate()` 의
 
 
 OCP를 지키지 않은 구조에서 `ProductValidator` 가 너무 하는 일이 많았습니다.
-
 달리 말해 가지고 있는 책임이 너무 많았다고 할수 있을것 같습니다.
-
 어떤 객체의 책임이 너무 무겁지 않은지 의심하고,
-
 SRP를 지키는 것 처럼 책임을 분리하는 작업을 통해 OCP를 지킬 수 있을 것 같습니다.
+
+
+
+### 3. LSP
+
+Liskov Substitution Principle - 리스코프 치환 원칙
+
+> "프로그램의 객체는 프로그램의 정확성을 깨뜨리지 않으면서 하위 타입의 인스턴스로 바꿀 수 있어야 한다."
+
