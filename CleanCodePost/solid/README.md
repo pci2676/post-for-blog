@@ -523,8 +523,3 @@ public class SmartMachine implements PrinterDevice, CopyDevice, FaxDevice {
 ```
 
 ISP는 SRP를 지키려 의식하며 코드를 작성한다면 같이 지켜지는 법칙이라 생각합니다.
-
-
-
-- 이해하기 힘들다.
-- 
