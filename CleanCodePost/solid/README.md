@@ -378,4 +378,153 @@ Interface segregation principle - 인터페이스 분리 원칙
 ISP를 설명하기에 적절한 예제로 다양한 기능을 가지고 있는 복합기 만한 것이 없는것 같습니다.  
 
 복합기는 여러가지 기능을 가지고 있습니다.  
-여기서는 인쇄, 복사, 팩스 기능을 가지고 있는 복합기가 있다고 가정해보겠습니다.
+여기서는 인쇄, 복사, 팩스 기능을 가지고 있는 복합기가 있다고 가정해보겠습니다.  
+아래는 복합기의 기능을 가지고 있는 인터페이스 입니다.
+
+```java
+public interface AllInOneDevice {
+    void print();
+
+    void copy();
+
+    void fax();
+}
+```
+
+그리고 복합기 객체를 위 인터페이스를 이용하여 구현하면 다음과 같습니다.  
+
+```java
+public class SmartMachine implements AllInOneDevice {
+    @Override
+    public void print() {
+        System.out.println("print");
+    }
+
+    @Override
+    public void copy() {
+        System.out.println("copy");
+    }
+
+    @Override
+    public void fax() {
+        System.out.println("fax");
+    }
+}
+```
+
+복합기는 인터페이스에 정의된 기능을 모두 수행할 필요가 있기에 내부에 메소드가 구현이 되어있습니다.  
+하지만 인쇄 기능만 있으면 되는 인쇄기를 위에 정의된 인터페이스를 이용하여 구현한다면 다음과 같이 될 것입니다.  
+
+```java
+package solid.isp.before;
+
+public class PrinterMachine implements AllInOneDevice {
+    @Override
+    public void print() {
+        System.out.println("print");
+    }
+
+    @Override
+    public void copy() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void fax() {
+        throw new UnsupportedOperationException();
+    }
+}
+```
+
+보시다시피 인쇄의 역할을 담당하는 print는 override되었지만 나머지 기능은 구현할 필요가 없기 때문에  
+`UnsupportedOperationException` 를 발생시키고 있습니다.  
+이런 경우, 인터페이스만 알고 있는 클라이언트는 printer에서 copy기능이 구현되어 있는지 안되어있는지 모르기 때문에  
+예상치 못한 오류를 만날 수 있습니다.
+
+이렇게 구현된 객체는 자신에게 필요없는 책임(copy, fax)를 가지고 있습니다.  
+SOLID의 첫번째 원칙인 SRP도 어기고 있는것을 확인할 수 있습니다.  
+해결책은 ISP의 이름에도 나와 있듯 **하나**의 인터페이스를 **분리**하여 **여러개**의 인터페이스로 나누는 것입니다.
+
+`AllInOneDevice` 를 나누면 다음과 같이 3개의 인터페이스로 나눌수 있습니다.
+
+```java
+public interface PrinterDevice {
+    void print();
+}
+
+public interface CopyDevice {
+    void copy();
+}
+
+public interface FaxDevice {
+    void fax();
+}
+```
+
+그리고 복합기가 필요하다면 다음과 같이 3개의 인터페이스를 전부 구현해 주면됩니다.
+
+```java
+public class SmartMachine implements PrinterDevice, CopyDevice, FaxDevice {
+    @Override
+    public void print() {
+        System.out.println("print");
+    }
+
+    @Override
+    public void copy() {
+        System.out.println("copy");
+    }
+
+    @Override
+    public void fax() {
+        System.out.println("fax");
+    }
+}
+```
+
+마찬가지로 특정 기능만을 필요로 하는 객체가 있다면
+
+1. 필요한 인터페이스만 이용하여 구현을 한다.
+2.  `SmartMachine` 을 해당 인터페이스로 업캐스팅한다.
+
+인쇄 기능만을 클라이언트에게 노출시키고 싶다면 다음과 같이 할수 있을 것 같습니다.
+
+1-1. 필요한 인터페이스만 이용하여 구현
+
+```java
+		// 구현한 객체
+		public class PrinterMachine implements PrinterDevice {
+ 		   @Override
+ 		 	 public void print() {
+ 	   	    System.out.println("print");
+		   }
+		}
+
+		// 클라이언트가 사용할 경우
+    @DisplayName("하나의 기능만을 필요로 한다면 하나의 인터페이스만 구현하도록 하자")
+    @Test
+    void singleInterface() {
+        PrinterDevice printer = new SmartMachine();
+
+        printer.print();
+    }
+```
+
+1-2. `SmartMachine` 을 해당 인터페이스로 제공
+
+```java
+    @DisplayName("특정 기능만 클라이언트에게 노출시킬수 있다.")
+    @Test
+    public void singleFunction() {
+        PrinterDevice printer = new SmartMachine();
+
+        printer.print();
+    }
+```
+
+ISP는 SRP를 지키려 의식하며 코드를 작성한다면 같이 지켜지는 법칙이라 생각합니다.
+
+
+
+- 이해하기 힘들다.
+- 
