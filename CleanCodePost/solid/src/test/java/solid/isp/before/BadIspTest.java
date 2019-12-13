@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class SmartMachineTest {
+class BadIspTest {
 
     @DisplayName("범용 인터페이스의 기능이 모두 구현된 경우")
     @Test
