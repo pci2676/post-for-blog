@@ -1,6 +1,6 @@
 # 객체지향설계 5원칙 SOLID의 이해와 예제
 
-### 목표
+## 목표
 
 [SOLID](https://ko.wikipedia.org/wiki/SOLID_(%EA%B0%9D%EC%B2%B4_%EC%A7%80%ED%96%A5_%EC%84%A4%EA%B3%84))에 대한 설명을 하는 글은 여러 블로그에 소개가 되어있습니다.
 하지만 대부분의 글이 개념적인 설명을 위주로 하고 있을뿐더러, 너무 추상적이라 이해하기 어렵다는 생각을 했습니다. 
@@ -11,7 +11,7 @@
 
 이 두 가지에 중점을 두고, 개념적인 설명만 있는게 아닌 예제를 통해 SOLID를 공부하고 이해해 보고자 합니다.
 
-글에서 사용된 예제는 모두 [GitHub](https://github.com/pci2676/post-for-blog/tree/master/CleanCodePost/solid)에 올라가 있습니다. Fork/PR을 통해서 제가 바꾼 방식보다 더 쉽고, 더 좋게 바꾸신 후 피드백을 주시면 양질의 게시글이 되는데 더 도움이 될 것 같습니다!
+글에서 사용된 예제는 모두 [GitHub](https://github.com/pci2676/post-for-blog/tree/master/CleanCodePost/solid)에 올라가 있습니다. 
 
 
 
@@ -305,9 +305,9 @@ public class ProductValidator {
     public void validate(Production production) {
         Validator productionValidator = new DefaultValidator();
 
-        for (Validator validator : validators) {
-            if (validator.support(production)) {
-                productionValidator = validator;
+        for (Validator localValidator : validators) {
+            if (localValidator.support(production)) {
+                productionValidator = localValidator;
                 break;
             }
         }
@@ -523,3 +523,139 @@ public class SmartMachine implements PrinterDevice, CopyDevice, FaxDevice {
 ```
 
 ISP는 SRP를 지키려 의식하며 코드를 작성한다면 같이 지켜지는 법칙이라 생각합니다.
+
+
+
+### 5. DIP
+
+Dependency Inversion Principle - 의존관계 역전 원칙
+
+> 추상화에 의존해야지, 구체화에 의존하면 안된다.
+
+
+
+DIP가 지켜지지 않은 코드
+
+```java
+public class ProductionService {
+
+    private final LocalValidator localValidator;
+
+    public ProductionService(LocalValidator localValidator) {
+        this.localValidator = localValidator;
+    }
+
+    public void validate(Production production) {
+        localValidator.validate(production);
+    }
+
+}
+
+public class LocalValidator {
+
+    public void validate(Production production) {
+        //validate
+    }
+}
+```
+
+위 코드는 아래와 같은 구조를 취하고 있습니다.
+
+![bad1](./img/bad1.png)
+
+ProductionService가 LocalValidator에게 의존하고 있는 구조입니다.  
+앞에서 다뤘던 OCP가 생각나지 않나요?  
+이전처럼 추가적인 Validator를 추가가 된다면 다음과 같아질것 입니다!
+
+```java
+// 이 친구가 추가되면서
+public class ETicketValidator {
+    public void validate(Production production) {
+        //validate
+    }
+}
+
+// 서비스가 가지게되는 의존성이 늘어나게 된다!
+public class ProductionService {
+
+    private final LocalValidator localValidator;
+    private final ETicketValidator eTicketValidator;
+
+    public ProductionService(LocalValidator localValidator, ETicketValidator eTicketValidator) {
+        this.localValidator = localValidator;
+        this.eTicketValidator = eTicketValidator;
+    }
+
+    public void validate(Production production) {
+        if (production.getType().equals("L")) {
+            localValidator.validate(production);
+        } else if (production.getType().equals("E")) {
+            eTicketValidator.validate(production);
+        }
+
+    }
+
+}
+```
+
+그리고 구조는 이렇게 됩니다!
+
+![bad2](./img/bad2.png)
+
+Service 코드가 if...else if 가 늘어나게 되는 구조.. OCP에서 보지 않았나요?  
+이제 DIP에서 인터페이스를 의존하라고 하였으니 그렇게 구현하도록 합니다!
+
+```java
+public interface Validator {
+    void validate(Production production);
+}
+
+public class LocalValidator implements Validator {
+    @Override
+    public void validate(Production production) {
+        //validate
+    }
+}
+
+public class ETicketValidator implements Validator {
+    @Override
+    public void validate(Production production) {
+        //validate
+    }
+}
+
+public class ProductionService {
+
+    private final Validator validator;
+
+    public ProductionService(Validator validator) {
+        this.validator = validator;
+    }
+
+    public void validate(Production production) {
+        validator.validate(production);
+    }
+}
+```
+
+인터페이스가 생겼습니다!  
+그리고 구조를 본다면 의존성의 방향이 거꾸로(역전) 흐르는것을 볼수 있습니다!
+
+![Good](./img/good.png)
+
+의존성이 역전됨으로써 ProductionService는 Validator의 구현체들로 부터 자유로워 졌고 코드의 변화도 없어지게 됩니다.  
+OCP에서 얻은 이점과 같이 확장에는 열리게 되고 변경에는 닫힌 구조가 완성이 되었습니다!
+
+한 클래스에 의존성이 너무 많이 있는지를 의심하고 그러한 구조를 개선하려 한다면 DIP를 준수하는 코드를 작성할 수 있을 것 같습니다.
+
+## 맺으며
+
+SOLID의 각 규칙들을 이론적으로만 알고 있었는데 직접 예제를 작성해가며 규칙을 적용해보니 각 규칙들이 독립적으로 존재하는 것이 아니라, 유기적으로 서로 연결이 되어있어 한 가지 규칙만 지켜지는 것이 아닌것을 알게되었습니다. 
+
+예제를 머리로도 이해가 되고 가슴으로도 와닿는 예제를 작성하고 싶었는데 생각보다 너무 어려웠던것 같습니다..  
+반드시 업데이트를 하도록 공부를 해야겠습니다.
+
+객체지향의 핵심 개념이지만 인턴을 하며 본 코드에는 규칙들이 생각보다 잘 안 지켜지고 있는 모습을 봤습니다.  
+그래서 코드의 유지보수가 힘들었고 코드를 따라가기가 매우 힘들었던 경험이 있습니다.  
+
+이론에 대해 알고 넘어가는것이 아닌 적용할 수 있는 프로그래머가 되도록 노력해야 할 것 같습니다.
