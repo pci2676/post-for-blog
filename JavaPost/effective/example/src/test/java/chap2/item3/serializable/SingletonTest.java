@@ -1,6 +1,5 @@
 package chap2.item3.serializable;
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -42,23 +41,10 @@ class SingletonTest {
 
         assertAll(
                 () -> assertThat(singleton).isEqualTo(deSerializedSingleton),
-                () -> assertThat(singleton == deSerializedSingleton).isTrue()
+                () -> assertThat(singleton == deSerializedSingleton).isTrue(),
+                () -> assertThat(singleton.toString().equals(deSerializedSingleton.toString())).isTrue()
         );
+
     }
 
-    @DisplayName("gson 직렬화 테스트")
-    @Test
-    void singletonTest2() {
-        Singleton singleton = Singleton.getInstance();
-
-        Gson gson = new Gson();
-        String jsonSingleton = gson.toJson(singleton);
-
-        Singleton deSerializedSingleton = gson.fromJson(jsonSingleton, Singleton.class);
-
-        assertAll(
-                () -> assertThat(singleton).isNotEqualTo(deSerializedSingleton),
-                () -> assertThat(singleton == deSerializedSingleton).isFalse()
-        );
-    }
 }
