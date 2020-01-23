@@ -3,7 +3,7 @@ package chap2.item3.serializable;
 import java.io.Serializable;
 
 public class Singleton implements Serializable {
-    transient private static final Singleton INSTANCE = new Singleton();
+    private static final Singleton INSTANCE = new Singleton();
 
     public static Singleton getInstance() {
         return INSTANCE;
