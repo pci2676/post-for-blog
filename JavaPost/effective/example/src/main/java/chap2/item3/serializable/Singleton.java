@@ -1,20 +1,20 @@
 package chap2.item3.serializable;
 
-public class Singleton {
-    private static final Singleton INSTANCE = new Singleton();
+import java.io.Serializable;
 
-    // 역직렬화시 새로운 인스턴스 생성 요인 차단방법 1
-    // transient 예약어를 추가하여 직렬화를 차단하여 역직렬화시 새로운 인스턴스가 생성되지 못하도록 한다.
-    // transient private static final Singleton INSTANCE = new Singleton();
+public class Singleton implements Serializable {
+    private static final Singleton INSTANCE = new Singleton();
 
     public static Singleton getInstance() {
         return INSTANCE;
     }
 
-    private Person person;
+    // 역직렬화시 새로운 인스턴스 생성 요인 차단방법 1
+    // transient 예약어를 추가하여 직렬화를 차단하여 역직렬화시 새로운 인스턴스가 생성되지 못하도록 한다.
+    transient private int value;
 
     private Singleton() {
-        person = new Person();
+        value = 1;
     }
 
     // 역직렬화시 새로운 인스턴스 생성 요인 차단방법 2
@@ -22,7 +22,11 @@ public class Singleton {
     private Object readResolve() {
         return INSTANCE;
     }
-}
 
-class Person {
+    @Override
+    public String toString() {
+        return "Singleton{" +
+                "value=" + value +
+                '}';
+    }
 }
