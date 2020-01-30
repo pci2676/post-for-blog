@@ -1,4 +1,4 @@
-package com.tistory.btt;
+package com.tistory.javabom;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
