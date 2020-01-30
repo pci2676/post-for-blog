@@ -19,10 +19,10 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-class SummonerRestTemplateMockTest {
+class MajorSummonerRestTemplateMockTest {
     private static final String SUMMONER_BY_NAME_URL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
 
-    private SummonerRestTemplate summonerRestTemplate;
+    private MajorSummonerRestTemplate summonerRestTemplate;
 
     private MockRestServiceServer mockServer;
 
@@ -30,7 +30,7 @@ class SummonerRestTemplateMockTest {
     @BeforeEach
     void setUp() {
         RestTemplate restTemplate = RiotRestTemplateBuilder.get(new RiotProperties()).build();
-        summonerRestTemplate = new SummonerRestTemplate(restTemplate);
+        summonerRestTemplate = new MajorSummonerRestTemplate(restTemplate);
         mockServer = MockRestServiceServer.createServer(restTemplate);
     }
 
