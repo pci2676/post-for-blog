@@ -141,7 +141,7 @@ Spring을 띄워 통신 결과를 반환하는 것이 아니라 localhost를 통
 먼저 `MockRestServiceServer`를 만들어 두도록 합니다.
 
 ```java
-		@BeforeEach
+    @BeforeEach
     void setUp() {
         RestTemplate restTemplate = RiotRestTemplateBuilder.get(new RiotProperties()).build();
         summonerRestTemplate = new SummonerRestTemplate(restTemplate);
@@ -223,7 +223,7 @@ class SummonerRestTemplateMockTest {
 이어서 RestTemplate에 미리 등록한 `ErrorHanlder`에서 발생하는 `exception`을 테스트하기 위해 통신 실패에 따른  테스트를 작성해 보도록 하겠습니다.
 
 ```java
-		@DisplayName("이름으로 사용자 찾기 실패")
+    @DisplayName("이름으로 사용자 찾기 실패")
     @Test
     public void findSummonerByName2() {
         //given
