@@ -12,13 +12,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 
-@Configuration
-@RequiredArgsConstructor
 public class SummonerRestTemplateConfiguration {
 
     private static final Duration READ_TIME = Duration.ofSeconds(30);
     private static final Duration CONN_TIME = Duration.ofSeconds(30);
-
 
     @Profile("major")
     @Configuration
@@ -36,9 +33,9 @@ public class SummonerRestTemplateConfiguration {
         }
     }
 
-    @Profile("test")
+    @Profile("local")
     @Configuration
-    public static class TestConfig {
+    public static class LocalConfig {
         @Bean
         public SummonerRestTemplate summonerRestTemplate() {
             return new StubSummonerRestTemplate();
