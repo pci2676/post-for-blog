@@ -1,4 +1,4 @@
-# Spring 의존성 없이 RestTemplate Test 하기
+# MockRestServiceServer를 이용해 RestTemplate Test 하기
 
 `RestTemplate`를 처음 사용하면서 Spring 의존성 없이 테스트 할 수 있도록 구조를 설계하여 테스트 코드를 작성한 방법에 대해 공유하고자 합니다.
 
@@ -45,8 +45,8 @@ public class SummonerDto {
 }
 ```
 
-이제 `SummonerRestTemplate`에서 사용 할 레스트 템플릿을 위해 필요한 공통적인 설정을 위한 레스트템플릿 빌더를 만들어 둡니다.  
-바로 레스트 템플릿을 반환하는게 아닌 빌더를 반환하는 이유는 가장 공통적인 설정만 하고 다른 곳에서 입맛에 맞게 나머지 설정을 할 수 있게 하기위해서 입니다. (ex.`READ_TIME_OUT`)
+이제 `SummonerRestTemplate`에서 사용 할 RestTemplate을 위해 필요한 공통적인 설정을 위한 RestTemplateBuilder를 만들어 둡니다.  
+바로 `.build` 명령어로 RestTemplate을 반환하는게 아닌 RestTemplateBuilder를 반환하는 이유는 가장 공통적인 설정만 하고 다른 곳에서 입맛에 맞게 나머지 설정을 할 수 있게 하기위해서 입니다. (ex.`READ_TIME_OUT`)
 
 ```java
 public class RiotRestTemplateBuilder {
@@ -61,8 +61,7 @@ public class RiotRestTemplateBuilder {
 }
 ```
 
-> RiotPerperties는 Riot API와 통신할때 인증을 위한 토큰입니다.
-> 무시하셔도 됩니다.
+> RiotPerperties는 Riot API와 통신할때 인증을 위한 토큰입니다. 무시하셔도 됩니다.
 
 위와 같이 `Interceptor`와 `ErrorHandler`와 같은 공통적인 설정만 해주도록 합시다.
 
@@ -92,7 +91,7 @@ public class SummonerRestTemplateConfiguration {
 ```
 
 이제 모든 준비가 끝났으니 실제 통신이 제대로 동작하는지 테스트를 작성합니다.  
-테스트는 Junit5, assertJ 를 사용했습니다.
+테스트는 `Junit5`, `assertJ` 를 사용했습니다.
 
 ```java
 @SpringBootTest
@@ -119,41 +118,50 @@ class SummonerRestTemplateTest {
 ```
 
 <center>정상적으로 테스트가 통과하는 것을 확인할 수 있습니다.  </center>
-
 <img src="https://user-images.githubusercontent.com/13347548/73444197-7202cf00-439b-11ea-9e19-9f87e187464f.png" alt="image" style="zoom:50%;" />
 
-이렇게 실제 통신을 하는 테스트만 만들어 두면 세 가지 문제점이 있습니다.
+이렇게 실제 통신을 하는 테스트만 만들어 두면 문제점이 있습니다.
 
-1. 만약 API 통신에 요금이 든다면 매번 **과금**이 될 수 있다.  
-2. **통신이 불가능한 상황**(인터넷 연결 X)이라면 테스트를 할 수 없다.
-3. 스프링이 올라간다음 테스트를 진행하기 때문에 속도가 **느립니다**.
+1. 만약 API 통신에 요금이 발생한다면 매번 **과금**이 될 수 있다.  
+2. **통신이 불가능한 상황**(ex.인터넷 연결 X)이라면 테스트를 할 수 없다.
+3. 스프링이 올라간다음 테스트를 진행하기 때문에 속도가 **느리다**.
 
-따라서, 우리가 만든 `SummonerRestTemplate`가 어떠한 동작을 하는지 실제 통신을 통하지 않고 빠르게 테스트 코드를 통해 확인할 수 있도록 만들어야합니다.  
+따라서, 우리가 만든 `SummonerRestTemplate`가 어떠한 동작을 하는지 실제 통신을 하지 않고 빠르게 테스트 코드를 통해 확인할 수 있도록 만들어야합니다.  
 
 
 ## MockRestServiceServer
 
-`MockRestServiceServer`는 RestTemplate를 테스트 하기 위한 Spring 라이브러리 입니다.  
-따라서 RestTemplate의 response 값을 Mock할 수 있는 기능을 제공합니다.  
-Spring을 띄워 통신 결과를 반환하는 것이 아니라 localhost를 통해 테스트 하기 때문에 속도가 굉장히 빠릅니다!
+`MockRestServiceServer`는 RestTemplate를 테스트 하기 위한 Spring에서 제공하는 테스트 라이브러리 입니다.  
+따라서 RestTemplate의 행동을 Mock 할 수 있는 기능을 제공합니다.  
+또한, Spring server를 띄워 테스트하는 것이 아니라 Mock server를 통해 테스트 하고 자바 코드로만 이루어져 있기 때문에 테스트 속도가 굉장히 빠릅니다!  
+
+> RestTemplate 의 ClientHttpRequestFactory에 SimpleClientHttpRequestFactory 이 아닌 MockClientHttpRequestFactory 가 주입됩니다.
 
 `MockRestServiceServer`에게 Mock할 RestTemplate 객체를 넘겨주고 넘겨준 RestTemplate에게 특정 요청에 대한 행동을 지정해주도록 해야합니다.  
-먼저 `MockRestServiceServer`를 만들어 두도록 합니다.
+먼저 `MockRestServiceServer`와 `RestTemplate`를 테스트가 실행 될 때마다 새롭게 생성되도록 합니다.
 
 ```java
-    @BeforeEach
+class MajorSummonerRestTemplateMockTest {
+
+		private MajorSummonerRestTemplate summonerRestTemplate;
+
+    private MockRestServiceServer mockServer;
+
+		@BeforeEach
     void setUp() {
         RestTemplate restTemplate = RiotRestTemplateBuilder.get(new RiotProperties()).build();
         summonerRestTemplate = new SummonerRestTemplate(restTemplate);
         mockServer = MockRestServiceServer.createServer(restTemplate);
     }
+  
+}
 ```
 
 위에서 만들어 두었던 `RiotRestTemplateBuilder`를 통해 Mock할 RestTemplate를 만들어 줍니다.  
 그리고 우리가 테스트하기 위한 `SummonerRestTemplate`와 MockServer에 주입해주도록 합니다.  
-이로 인해 우리가 테스트 하는 `SummonerRestTemplate`에서 동작하는 기능은 MockServer에서 정의한 대로 동작을 하게 됩니다.
+이로 인해 우리가 테스트 하는 `SummonerRestTemplate`에서 동작하는 기능은 `mockServer`에서 정의한 대로 동작을 하게 됩니다.
 
-이제 MockServer에서 특정 요청에 대한 행동을 지정해 두도록 합니다.
+이제 `mockServer`에서 특정 요청에 대한 행동을 지정해 두도록 합니다.
 
 ```java
 this.mockServer.expect(requestTo(SUMMONER_BY_NAME_URL + encodedName))
@@ -162,7 +170,7 @@ this.mockServer.expect(requestTo(SUMMONER_BY_NAME_URL + encodedName))
 
 요청 주소(`requestTo`)가 `SUMMONER_BY_NAME_URL + encodedName`인 곳에 대한 응답(`andRespond`)으로  
 성공(`withSuccess`)과 함께 응답 값(`expectBody, MediaType.APPLICATION_JSON`)을 내려주도록 지정해 둡니다.  
-그리고 테스트 마지막에 **반드시** `verify()` 메소드를 호출하도록 합니다. `verify` 메소드는 mockserver에서 사용된 resttemplate가 호출 됬는지 확인하여 테스트가 올바른지 확인합니다.
+그리고 테스트 마지막에 **반드시** `verify()` 메소드를 호출하도록 합니다. `verify` 메소드는 `mockServer`에서 사용되는 RestTemplate가 우리가 기대한 대로 (`.expect()`, `.andExpect()`) 동작했는지에 대해 확인합니다.
 
 ```java
 this.mockServer.verify();
@@ -219,7 +227,6 @@ class SummonerRestTemplateMockTest {
 <img src="https://user-images.githubusercontent.com/13347548/73444307-aecec600-439b-11ea-87e3-ff240ef6276a.png" alt="image" style="zoom:50%;" />
 
 <center>정상적으로 통과하고 Spring을 띄운 테스트 보다 훨씬 빠른 속도인것을 확인 할 수 있습니다.</center>
-
 이어서 RestTemplate에 미리 등록한 `ErrorHanlder`에서 발생하는 `exception`을 테스트하기 위해 통신 실패에 따른  테스트를 작성해 보도록 하겠습니다.
 
 ```java
@@ -253,16 +260,16 @@ class SummonerRestTemplateMockTest {
 <img src="https://user-images.githubusercontent.com/13347548/73444349-c443f000-439b-11ea-9c7d-10e02deb3d95.png" alt="image" style="zoom:50%;" />
 
 <center>실패 테스트도 정상적으로 통과하였습니다.</center>
-
 바뀐 부분은 `andRespond()` 블럭 내 `withBadRequest`가 있고 따로 `body`, `contentType`을 지정하는 것임을 확인 할 수 있습니다.  
 만약 BadRequest가 아닌 다른 `status code`를 테스트 하고 싶다면 `withStatus`를 사용하면 됩니다.
 
 ## 구조 개선
 
 현재 상태로는 한 가지 문제점이 있습니다.  
-바로 `SummonerRestTemplate`를 사용하는 쪽에서 테스트 코드를 작성할 경우 실제 통신이 이루어져야 하기 때문에 Spring이 반드시 떠야한다는 문제점이 있습니다.  
-이를 해결하기 위해 `SummonerRestTemplate`를 `Interface`로 변경하고 `Configuration` 코드를 변경해 주도록 합니다.  
-다시 말해, profile 별로 실행되는 `SummonerRestTemplate`를 만들어 주도록 합시다.
+바로 `SummonerRestTemplate`를 사용하는 쪽(ex. 다른 모듈)에서 테스트 코드를 작성할 경우 실제 통신이 이루어져야 하기 때문에 Spring이 반드시 떠야한다는 점 입니다.  
+이를 해결하기 위해 `SummonerRestTemplate`를 `Interface`로 변경하고 `SummonerRestTemplateConfiguration` 코드를 변경해 주도록 합니다.  
+
+아래와 같이 profile 별로 실행되는 `SummonerRestTemplate`를 만들어 주도록 합시다.
 
 ```java
 public interface SummonerRestTemplate {
@@ -303,7 +310,8 @@ public class StubSummonerRestTemplate implements SummonerRestTemplate {
 
 `StubSummonerRestTemplate`는 통신을 하지 않고 항상 고정된 `SummonerDto`를 반환도록 합니다.
 
-이제 Profile에 따라 다른 Bean을 띄우도록 `SummonerRestTemplateConfiguration`을 수정하도록 합니다.
+이제 Profile에 따라 다른 Bean을 띄우도록 `SummonerRestTemplateConfiguration`을 수정하도록 합니다.  
+`@Profile` 어노테이션을 이용하여 active된 profile 별로 Bean이 생성되게 됩니다.
 
 ```java
 public class SummonerRestTemplateConfiguration {
@@ -339,7 +347,17 @@ public class SummonerRestTemplateConfiguration {
 }
 ```
 
-이제 profile active의 상태가 `major`라면 `MajorConfig`가 `local`라면 `TestConfig`가 실행되어 상황에 알맞게 `SummonerRestTemplate` Bean이 생성되게 되었습니다.
+이제 profile active의 상태가 `major`라면 `MajorConfig`가 `local`라면 `LocalConfig`가 실행되어 상황에 알맞게 `SummonerRestTemplate` Bean이 생성되게 되었습니다.
+
+## 다른 Http Method 테스트
+
+기본적으로 아무런 설정도 안한다면 mockServer는 Http method가 `GET`으로 온다고 기대합니다.  
+`POST`와 같은 다른 method를 테스트하고 싶다면 다음과 같이 `.andExpect(method())`를 사용하면 됩니다.
+
+```java
+mockServer.expect(requestTo("http://yourURL"))
+                .andExpect(method(HttpMethod.POST));
+```
 
 ## 의존성 분리
 
