@@ -9,6 +9,17 @@ group = 'com.javabom'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+asciidoctor {
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
