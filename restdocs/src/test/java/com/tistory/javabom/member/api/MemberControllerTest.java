@@ -75,14 +75,14 @@ class MemberControllerTest {
 
         //then
         resultActions.andExpect(status().isOk())
-                .andDo(document("update",
+                .andDo(document("updateMember", // 문서 폴더 이름
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
                                 parameterWithName("id").description("멤버 고유 식별자")
                         ),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("바꿀 사용자 이름"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("바꿀 사용자 이름").optional(),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("바꿀 사용자 이메일"),
                                 fieldWithPath("gitHub").type(JsonFieldType.STRING).description("바꿀 사용자 깃헙주소")
                         ),
