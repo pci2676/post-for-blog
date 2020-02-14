@@ -1,0 +1,14 @@
+= 멤버
+
+== 멤버 업데이트
+
+include::{snippets}/Member-API/http-request.adoc[]
+
+include::{snippets}/Member-API/path-parameters.adoc[]
+
+include::{snippets}/Member-API/request-fields.adoc[]
+
+include::{snippets}/Member-API/http-response.adoc[]
+
+include::{snippets}/Member-API/response-fields.adoc[]
+
