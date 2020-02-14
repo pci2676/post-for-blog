@@ -1,7 +1,0 @@
-= 멤버
-== 멤버 업데이트
-include::{snippets}/updateMember/http-request.adoc[]
-include::{snippets}/updateMember/path-parameters.adoc[]
-include::{snippets}/updateMember/request-fields.adoc[]
-include::{snippets}/updateMember/http-response.adoc[]
-include::{snippets}/updateMember/response-fields.adoc[]

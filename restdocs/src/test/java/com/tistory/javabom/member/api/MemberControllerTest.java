@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +32,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(MemberController.class)
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "docs.api.com")
 class MemberControllerTest {
@@ -44,7 +45,6 @@ class MemberControllerTest {
 
     @MockBean
     private MemberService memberService;
-
 
     @DisplayName("멤버 정보 변경 API 문서화")
     @Test
@@ -75,7 +75,7 @@ class MemberControllerTest {
 
         //then
         resultActions.andExpect(status().isOk())
-                .andDo(document("updateMember", // 문서 폴더 이름
+                .andDo(document("Member-API",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(

@@ -9,12 +9,13 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
 public interface ApiDocumentUtils {
+
     static OperationRequestPreprocessor getDocumentRequest() {
         return preprocessRequest(
                 modifyUris() // 아래와 같이 URI를 바꿔준다
-//                        .scheme("https")
-                        .host("docs.api.com"),
-//                        .removePort(),
+                        .scheme("https")
+                        .host("docs.api.com")
+                        .removePort(),
                 prettyPrint()); // 문서의 req 를 예쁘게 출력해 준다.
     }
 
