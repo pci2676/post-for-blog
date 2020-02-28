@@ -57,7 +57,7 @@ jacocoTestReport {
     reports {
             html.enabled true
             csv.enabled true
-			      xml.enabled false
+	    xml.enabled false
     }
 }
 ```
@@ -251,7 +251,7 @@ class PositiveNumberJunit5Test {
     }
 
     @DisplayName("양수 덧셈")
-  	@Test
+    @Test
     void addTest() {
         //given
         PositiveNumber result = new PositiveNumber(2);
@@ -500,7 +500,7 @@ jacoco를 적용하면 test를 할 때 jacoco가 테스트 정보를 수집하�
 이를 확인하기 위해 테스트 코드를 작성해 보도록 하겠습니다.
 
 ```java
-		@Test
+    @Test
     void reflectionTest() {
         Field[] declaredFields = PositiveNumber.class.getDeclaredFields();
 
