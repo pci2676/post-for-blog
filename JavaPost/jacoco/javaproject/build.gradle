@@ -12,17 +12,20 @@ repositories {
     mavenCentral()
 }
 
-jacoco{
+jacoco {
     toolVersion = "0.8.5"
 }
 
 dependencies {
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.15.0'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile('org.junit.jupiter:junit-jupiter:5.6.0')
+    testCompileOnly group: 'junit', name: 'junit', version: '4.12'
+    testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.4.0')
+
+    testImplementation('org.junit.jupiter:junit-jupiter:5.6.0')
 }
 
-test{
+test {
+    useJUnitPlatform()
     finalizedBy 'jacocoTestReport'
 }
 
