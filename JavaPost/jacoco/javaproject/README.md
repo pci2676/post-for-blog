@@ -308,7 +308,7 @@ test {
         useJUnitPlatform ()
         jacoco {
             enabled = true
-						address = "localhost"
+	    address = "localhost"
             classDumpDir = null
             destinationFile = file("$buildDir/jacoco/${name}.exec")
             dumpOnExit = true
