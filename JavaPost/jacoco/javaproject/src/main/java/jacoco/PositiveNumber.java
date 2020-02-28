@@ -9,7 +9,7 @@ public final class PositiveNumber {
     }
 
     private void validate(long value) {
-        if (value < 0) {
+        if (value <= 0) {
             throw new IllegalArgumentException(String.format("%d 는 양수가 아닙니다.", value));
         }
     }
