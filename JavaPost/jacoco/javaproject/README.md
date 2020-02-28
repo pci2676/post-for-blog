@@ -337,7 +337,7 @@ test {
 
 멀티 모듈 프로젝트의 뼈대를 만든다음 적용하면 다음과 같이 `build.gradle`이 완성됩니다!
 
-```
+```groovy
 subprojects {
     group = 'com.javabom'
     version = '1.0.0'
