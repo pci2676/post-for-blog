@@ -3,6 +3,8 @@ package jacoco;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PositiveNumberJunit5Test {
@@ -31,5 +33,20 @@ class PositiveNumberJunit5Test {
 
         //then
         assertThat(expect).isEqualTo(result);
+    }
+
+    @Test
+    void reflectionTest() {
+        Field[] declaredFields = PositiveNumber.class.getDeclaredFields();
+
+        for (Field field : declaredFields) {
+            if (field.isSynthetic()) {
+                System.out.println(field + " jacoco가 넣은 필드");
+            } else {
+                System.out.println(field + " 기존 필드");
+            }
+        }
+
+        assertThat(declaredFields).hasSize(2);
     }
 }
