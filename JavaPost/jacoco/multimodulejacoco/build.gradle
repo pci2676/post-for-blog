@@ -1,0 +1,49 @@
+buildscript {
+	ext {
+		springBootVersion = '2.2.5.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	repositories {
+		mavenCentral()
+	}
+
+	group = 'com.javabom'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '1.8'
+
+	dependencies {
+		implementation('org.projectlombok:lombok')
+		annotationProcessor ('org.projectlombok:lombok')
+
+		implementation 'org.junit.jupiter:junit-jupiter'
+		testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+project(':jacoco-api') {
+	dependencies {
+	}
+}
+
+project(':jacoco-external') {
+	dependencies {
+	}
+}
+
