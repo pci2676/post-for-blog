@@ -108,8 +108,7 @@ jacocoTestCoverageVerification {
    명시적으로 지정하지 않으면 default로 true입니다.
 
 2. element : 측정의 큰 단위를 나타냅니다.  
-   
-
+  
 3. includes : rule 적용 대상을 package 수준으로 정의합니다.  
    아무런 설정을 하지 않는다면 전체 적용됩니다.
 
@@ -330,71 +329,213 @@ test {
 
 이제 우리의 스프링 부트 프로젝트에 적용을 하러 갑시다!
 
-간단합니다!
+아래와 같이  `core`, `api` 단 두개의 모듈을 가지고 있는 아주 간단한 멀티 모듈 프로젝트를 만들겠습니다.
 
-우리는 jacoco를 모든 프로젝트의 테스트에 적용하고 싶기 때문에 `subprojects` block에 설정값을 추가하고  
+`core` 모듈은 QueryDSL 의존성을 가지고 있는 도메인 모듈입니다.
+
+![image](https://user-images.githubusercontent.com/13347548/76142029-f5a39000-60ac-11ea-9752-85407e97b136.png)
+
+위와 같이 만들고 `ROOT`프로젝트의 `build.gradle` 을 다음과 같이 작성해줍니다.
+
+```groovy
+buildscript {
+	ext {
+		springBootVersion = '2.2.5.RELEASE'
+		querydslPluginVersion = '1.0.10'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
+		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}")
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	repositories {
+		mavenCentral()
+	}
+
+	group = 'com.javabom'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '1.8'
+
+	dependencies {
+		implementation('org.projectlombok:lombok')
+		annotationProcessor ('org.projectlombok:lombok')
+
+		implementation 'org.junit.jupiter:junit-jupiter'
+		testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+
+}
+
+def queryDslProjects = [project(':jacoco-core')]
+configure(queryDslProjects) {
+
+	def queryDslSrcDir = 'src/main/generated'
+
+	apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+	querydsl {
+		library = "com.querydsl:querydsl-apt"
+		jpa = true
+		querydslSourcesDir = queryDslSrcDir
+	}
+
+	sourceSets {
+		main {
+			java {
+				srcDirs = ['src/main/java', queryDslSrcDir]
+			}
+		}
+	}
+	dependencies {
+		compile("com.querydsl:querydsl-jpa")
+		compile("com.querydsl:querydsl-apt")
+	}
+
+	compileQuerydsl {
+		options.annotationProcessorPath = configurations.querydsl
+	}
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+		querydsl.extendsFrom compileClasspath
+	}
+}
+```
+
+이제 우리는 jacoco를 모든 모듈의 테스트에 적용하고 싶기 때문에 `subprojects` block에 설정값을 추가하고  
 `plugins` block 대신 `apply plugin` 으로 jacoco 를 추가해주면 됩니다!
 
 멀티 모듈 프로젝트의 뼈대를 만든다음 적용하면 다음과 같이 `build.gradle`이 완성됩니다!
 
 ```groovy
+buildscript {
+	ext {
+		springBootVersion = '2.2.5.RELEASE'
+		querydslPluginVersion = '1.0.10'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
+		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}")
+	}
+}
+
 subprojects {
-    group = 'com.javabom'
-    version = '1.0.0'
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'jacoco'
 
-    apply plugin: 'java'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'jacoco'
+	repositories {
+		mavenCentral()
+	}
 
-    sourceCompatibility = '1.8'
+	jacoco {
+		toolVersion = "0.8.5"
+	}
 
-    repositories {
-        mavenCentral()
-    }
+	group = 'com.javabom'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '1.8'
 
-    dependencies {
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	dependencies {
+		implementation('org.projectlombok:lombok')
+		annotationProcessor ('org.projectlombok:lombok')
 
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-    }
+		implementation 'org.junit.jupiter:junit-jupiter'
+		testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
+	}
 
-    jacoco {
-        toolVersion = '0.8.5'
-    }
+	test {
+		useJUnitPlatform()
+		finalizedBy 'jacocoTestReport'
+	}
 
-    test {
-        useJUnitPlatform()
-        finalizedBy 'jacocoTestReport'
-    }
+	jacocoTestReport {
+		reports {
+			html.enabled true
+			xml.enabled false
+			csv.enabled true
+		}
 
-    jacocoTestReport {
-        reports {
-            html.enabled true
-            xml.enabled false
-            csv.enabled true
-        }
-        finalizedBy 'jacocoTestCoverageVerification'
-    }
+		finalizedBy 'jacocoTestCoverageVerification'
+	}
 
-    jacocoTestCoverageVerification {
-        violationRules {
-            rule {
-                element = 'CLASS'
+	jacocoTestCoverageVerification {
+		violationRules {
+			rule {
+				enabled = true
+				element = 'CLASS'
 
-                limit {
-                    counter = 'LINE'
-                    value = 'COVEREDRATIO'
-                    minimum = 0.60
-                }
+				limit {
+					counter = 'LINE'
+					value = 'COVEREDRATIO'
+					minimum = 0.60
+				}
 
-                excludes = []
-            }
+				excludes = []
+			}
 
-        }
-    }
+		}
+	}
+}
 
+def queryDslProjects = [project(':jacoco-core')]
+configure(queryDslProjects) {
+
+	def queryDslSrcDir = 'src/main/generated'
+
+	apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+	querydsl {
+		library = "com.querydsl:querydsl-apt"
+		jpa = true
+		querydslSourcesDir = queryDslSrcDir
+	}
+
+	sourceSets {
+		main {
+			java {
+				srcDirs = ['src/main/java', queryDslSrcDir]
+			}
+		}
+	}
+	dependencies {
+		compile("com.querydsl:querydsl-jpa")
+		compile("com.querydsl:querydsl-apt")
+	}
+
+	compileQuerydsl {
+		options.annotationProcessorPath = configurations.querydsl
+	}
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+		querydsl.extendsFrom compileClasspath
+	}
 }
 ```
 
@@ -403,20 +544,38 @@ subprojects {
 jacoco 적용하기에서 한번 언급을 했던 측정하지 않을 클래스를 설정하는 부분입니다.
 
 JPA를 쓰고 QuertDSL을 쓴다면 Q domain이 생기는데 이 부분은 테스트할 필요가 없습니다.  
-그리고 각종 Configuration 클래스는 현재 저희 프로젝트에서는 굳이 test 커버리지에서 추가할 필요가 없다고 느껴졌습니다.
 
-하지만 jacoco는 위 클래스들을 전부 테스트 대상으로 파악하여 프로젝트 build를 실패하게 만듭니다!
+아래와 같이 domain 객체로 Book과 Question Entity를 작성후 querydslComplie task를 실행후 test를 실행해 보면!
 
-<img src="https://user-images.githubusercontent.com/13347548/75577553-8ffc4600-5aa5-11ea-9bd3-3fcf8ddcf01e.png" alt="image" style="zoom:50%;" />
+![image](https://user-images.githubusercontent.com/13347548/76140887-45c92500-60a2-11ea-932f-43c2262807c1.png)
 
-> Config 클래스의 테스트 커버리지가 0이라서 실패한 모습...
-
-이를 해결 하기 위해 아래와 같이 와일드 카드를 이용해서 coverage 대상에서 제외시키도록 하였습니다!
+보시다시피 Entity의 테스트 커버리지뿐 아니라 Qdomain들의 테스트 커버리지까지 측정해서 빌드가 실패하게 되는것을 확인할 수 있습니다.  
+이를 해결하기위해 `excludes` 에 `패키지+클래스` 명으로 Qdomain을 제외시켜주면 되는데요!  
+단순히 다음과 같이 `*.Q*` 라고 지정해준다면 한가지 문제가 발생합니다.  
 
 ```groovy
-jacocoTestCoverageVerification {
+excludes = ["*.Q*"]
+```
+
+바로 Entity를 비롯한 Q로 시작하는 모든 클래스를 검증 대상으로 삼지 않는다는 것인데요.
+
+![image](https://user-images.githubusercontent.com/13347548/76140924-afe1ca00-60a2-11ea-9f0f-25004ff238af.png)
+
+이를 해결하기 위해 저는 꼼수(?)를 사용했습니다.  
+Qdomain의 경우 맨 앞글자가 Q 그다음 글자도 영문자 대문자로 시작한다는 것을 확인할 수 있는데요.  
+따라서 다음과 같이 for loop를 이용해서 해당 패턴의 Qdomain경로를 모아서 exclude에 추가해 주면됩니다!  
+이를 작성하면 다음과 같은 코드가 됩니다.
+
+```groovy
+    jacocoTestCoverageVerification {
+        def Qdomains = []
+        for (qPattern in "*.QA".."*.QZ") {  // qPattern = "*.QA","*.QB","*.QC", ... "*.QZ"
+            Qdomains.add(qPattern + "*")
+        }
+
         violationRules {
             rule {
+                enabled = true
                 element = 'CLASS'
 
                 limit {
@@ -425,27 +584,30 @@ jacocoTestCoverageVerification {
                     minimum = 0.60
                 }
 
-                excludes = [
-                        '*.Q*',
-                        '*.*Config*'
-                ]
+                excludes = [] + Qdomains
+
             }
 
         }
     }
 ```
 
-이제 build가 성공적으로 됩니다!!
+test를 해보면 우리가 원하는대로 Entity만 검증하고 있는 것을 확인할 수 있습니다!
+
+![image](https://user-images.githubusercontent.com/13347548/76140972-33032000-60a3-11ea-93e6-481a978a3ce9.png)
+
+
 
 ### jacocoReport에서 수집되지 않도록 제외하기
 
-하지만 한가지 문제점이 남아있었습니다.
+테스트 코드를 모두 작성해서 빌드를 통과하더라도 한가지 문제점이 남아있었습니다.
 
-jacoco의 테스트 커버리지 대상에서 벗어나도록 설정은 했지만 report 대상에는 그대로 남아 있어 프로젝트 커버리지 비율을 떨어뜨리고 있었습니다..!!
+jacoco의 테스트 검증 대상에서 벗어나도록 설정은 했지만 report 대상에는 그대로 남아 있어 프로젝트 커버리지 비율을 떨어뜨리고 있었습니다..!!
 
-<img src="https://user-images.githubusercontent.com/13347548/75577823-2597d580-5aa6-11ea-95f2-0f596673dea6.png" alt="image" style="zoom:50%;" />
+![image](https://user-images.githubusercontent.com/13347548/76141035-f4219a00-60a3-11ea-843e-3cd6f56af10c.png)
 
-이를 해결하기 위해 report block에서 우리가 설정한 디렉토리는 report 결과에 포함하지 않도록 해줍시다!
+이를 해결하기 위해 jacocoTestReport block에서 우리가 설정한 디렉토리는 report 결과에 포함하지 않도록 해줍시다!  
+여기서는 `패키지+클래스` 경로가 아닌 `디렉토리` 경로를 잡아줘야합니다.
 
 ```groovy
 jacocoTestReport {
@@ -455,36 +617,57 @@ jacocoTestReport {
             csv.enabled true
         }
 
+        def Qdomains = []
+        for(qPattern in "**/QA" .. "**/QZ"){
+            Qdomains.add(qPattern+"*")
+        }
+
         afterEvaluate {
+            
             classDirectories.setFrom(files(classDirectories.files.collect {
                 fileTree(dir: it,
-                        exclude: [
-                                '**/generated', // Q도메인이 위치한 디렉토리입니다.
-                                '**/*Config*.*'
-                        ])
+                        exclude: [] + Qdomains)
             }))
         }
+
         finalizedBy 'jacocoTestCoverageVerification'
     }
 ```
 
-<img src="https://user-images.githubusercontent.com/13347548/75578022-71e31580-5aa6-11ea-8d75-45c235d0fe69.png" alt="image" style="zoom:50%;" />
+![image](https://user-images.githubusercontent.com/13347548/76141194-431bff00-60a5-11ea-8569-40d3f077d922.png)
 
 이제 한층 깔끔한 report가 생성되는군요!!
+
+## Lombok과 DTO
+
+Lombok을 이용해서 우리는 getter, Builder와 같은 메서드를 손쉽게 쓸 수 있습니다.
+
+하지만 jacoco 테스트에서는 이것도 문제가 될 수 있는데요!  
+단순히 getter와 builder가 테스트 되는지 알고 싶지 않을수 있고 테스트 커버리지에 영향을 미치는것 또한 바라지 않을 수 있습니다.
+
+![image](https://user-images.githubusercontent.com/13347548/76143073-44eebe00-60b7-11ea-8522-db86503b3b89.png)
+
+이를 해결해주는 방법은 아주 단순합니다!
+
+![image](https://user-images.githubusercontent.com/13347548/76143087-7071a880-60b7-11ea-99b6-d402c654ec50.png)
+
+```groovy
+lombok.addLombokGeneratedAnnotation = true
+```
+
+위와 같이 `lombok.config`를 추가해준 다음 한 줄을 추가해주면 lombok에 의해 generated된 메서드는 테스트 검증에서 제외되는 것을 아래에서 확인할 수 있습니다!
+
+![image](https://user-images.githubusercontent.com/13347548/76143103-a747be80-60b7-11ea-9bcc-d32f55d3b8ae.png)
 
 ### 과제
 
 모든것이 해결된 것 처럼 보이지만 해결해야할 과제가 남아있습니다.  
 
-1. Q도메인을 커버리지 측정대상에서 지우기위해 와일드 카드(`*`)를 사용했기때문에  
-   Q로 시작하는 모든 클래스는 커버리지 측정대상에서 제외됩니다.
-2. 커버리지 측정 제외 대상과 report 제외 대상이 1:1로 일치하지 않습니다.  
-   커버리지 측정 제외 대상은 **패키지+클래스**로 지정한 반면  
-   report 제외 대상은 **디렉토리** 기준으로 설정되어 있습니다.
+커버리지 측정 제외 대상과 report 제외 대상이 1:1로 일치하지 않습니다.  
+커버리지 측정 제외 대상은 **패키지+클래스**로 지정한 반면  
+report 제외 대상은 **디렉토리** 기준으로 설정되어 있습니다.
 
-위 두가지 문자를 해결할 방법을 찾아서 글을 수정하도록 하겠습니다.
-
-
+위 문제를 해결할 수 있는 방법을 찾아야할 것 같습니다.
 
 ## jacoco 사용시 테스트에서 주의점
 

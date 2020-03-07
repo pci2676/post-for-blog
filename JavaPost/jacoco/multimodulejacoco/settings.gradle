@@ -1,4 +1,4 @@
 rootProject.name = 'multimodulejacoco'
 include 'jacoco-api'
-include 'jacoco-external'
+include 'jacoco-core'
 
