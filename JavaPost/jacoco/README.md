@@ -120,8 +120,10 @@ jacocoTestCoverageVerification {
      - CLASS : 클래스 내부 메소드가 한번이라도 실행된다면 실행된 것으로 간주됩니다.  
      - METHOD : 클래스와 마찬가지로 METHOD가 한번이라도 실행되면 실행된 것으로 간주됩니다.  
      - LINE : 한 라인이라도 실행되었다면 측정이 됩니다.  
-       개인적으로 LINE이 커버리지 측정에 가장 도움이 되는것 같습니다.  
+       소스 코드 포맷에 영향을 받는 측정방식입니다.
      - BRANCH : `if`, `switch` 구문에 대한 커버리지 측정을 합니다.
+     - INSTRUCTION : jacoco의 가장 작은 측정 방식입니다. (바이트 코드를 읽습니다.)  
+       LINE과 다르게 소스 코드 포맷에 영향을 받지 않습니다.
 
    - value : 측정한 counter의 정보를 어떠한 방식으로 보여줄지 정합니다.  
      value의 종류는 TOTALCOUNT, COVEREDCOUNT, MISSEDCOUNT, COVEREDRATIO, MISSEDRATIO 가 있습니다.  
