@@ -93,3 +93,23 @@ Install suggested plugins 을 통해 설치합니다.
 
 설치가 끝난뒤 계정을 생성하면 Jenkins의 설치는 마무리가 된다.
 
+계정 생성을 하자! 그럼 끝이다!
+
+![image](https://user-images.githubusercontent.com/13347548/76684470-a41c7780-664f-11ea-944d-d9efde9da4de.png)
+
+그런데 모든일이 원하는 대로 되지는 않는다고, 간혹 설치하다가 error가 발생하기도 한다. 열받게.
+
+![image](https://user-images.githubusercontent.com/13347548/76684366-edb89280-664e-11ea-9381-43b570cd008e.png)
+
+의존성 에러가 발생했다고 jenkins가 친절하게 알려준다.
+
+![image](https://user-images.githubusercontent.com/13347548/76684388-13de3280-664f-11ea-9283-fa15d8e7ebb2.png)
+
+설치가 안되어있으면 설치를 해준 다음 재시작 하면되고,  
+설치가 되어있다고 나온다면 바로 재시작 해주면 해결된다.
+
+![image](https://user-images.githubusercontent.com/13347548/76684442-759e9c80-664f-11ea-857d-9250876dfa16.png)
+
+편안~
+
+설치가 끝났다!
