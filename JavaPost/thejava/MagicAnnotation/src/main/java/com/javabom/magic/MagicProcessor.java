@@ -1,4 +1,4 @@
-package com.javabom;
+package com.javabom.magic;
 
 import com.google.auto.service.AutoService;
 
@@ -11,7 +11,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,17 +19,19 @@ public class MagicProcessor extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return new HashSet<>(Arrays.asList(Magic.class.getName()));
+        Set<String> names = new HashSet<>();
+        names.add(Magic.class.getName());
+        return names;
     }
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.RELEASE_8;
+        return super.getSupportedSourceVersion();
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        //적절한 곳에 어노테이션이 붙어 있는지 확인
+        //내가 원하는 곳에 어노테이션이 붙어 있는지 확인
         Set<? extends Element> elementsAnnotatedWith = roundEnv.getElementsAnnotatedWith(Magic.class);
         for (Element element : elementsAnnotatedWith) {
             Name elementSimpleName = element.getSimpleName();

@@ -9,9 +9,15 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+//    compile fileTree(include: ['*.jar'], dir: 'libs')
+//    compile files('libs/MagicAnnotation-1.0-SNAPSHOT.jar')
+    compileOnly (name:'MagicAnnotation-1.0-SNAPSHOT', ext:'jar')
+//    compileClasspath 'com.javabom.magic:MagicAnnotation:1.0-SNAPSHOT'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

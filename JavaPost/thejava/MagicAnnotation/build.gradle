@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'com.javabom'
+group 'com.javabom.magic'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
