@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1e7aaa02-7d56-4cb1-9340-2978f38e355c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/AnnotaitionMagic/src/main/java/com/javabom/MagicProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/AnnotaitionMagic/src/main/java/com/javabom/annotation/Magic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/src/main/java/com/javabom/magic/Magic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/src/main/java/com/javabom/magic/MagicProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnotation/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnotation/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnotation/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnotation/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnotation/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnotation/src/main/java/com/javabom/MagicProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/MagicAnotation/src/main/java/com/javabom/annotation/Magic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/src/main/java/com/javabom/magic/MagicianApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/src/main/java/com/javabom/magic/NonMagic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/Magician/src/main/java/com/javabom/magic/RealMagic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/MagicAnnotation/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/src/main/java/com/javabom/di/DiContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/src/main/java/com/javabom/di/DiContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/src/main/java/com/javabom/di/annotation/Autowired.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/src/main/java/com/javabom/di/annotation/Autowired.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/src/main/java/com/javabom/member/domain/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/src/main/java/com/javabom/member/domain/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/src/main/java/com/javabom/member/repository/MemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/src/main/java/com/javabom/member/repository/MemberRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/src/main/java/com/javabom/member/service/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/src/main/java/com/javabom/member/service/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SimpleDiFrameWork/src/test/java/com/javabom/di/DiContainerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../thejava/SimpleDiFrameWork/src/test/java/com/javabom/di/DiContainerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Z5AUWMkLgHybJo64mO5tm9CtTB" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.javabom.counter" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.Tests in 'CounterExample.test'">
+    <configuration name="CounterTest.getCounter" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;com.javabom.counter.CounterTest.getCounter&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tests in 'CounterExample.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests *" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.Tests in 'CounterExample.test'" />
+        <item itemvalue="Gradle.CounterTest.getCounter" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1e7aaa02-7d56-4cb1-9340-2978f38e355c" name="Default Changelist" comment="" />
+      <created>1584118597065</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584118597065</updated>
+      <workItem from="1584118599938" duration="559000" />
+      <workItem from="1584206529997" duration="1408000" />
+      <workItem from="1584258252341" duration="3908000" />
+      <workItem from="1584263508146" duration="673000" />
+      <workItem from="1584533548584" duration="21000" />
+    </task>
+    <task id="LOCAL-00001" summary="jacoco counter project init">
+      <created>1584258539880</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1584258539880</updated>
+    </task>
+    <task id="LOCAL-00002" summary="jacoco counter done">
+      <created>1584261771090</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1584261771090</updated>
+    </task>
+    <task id="LOCAL-00003" summary="jacoco counter done">
+      <created>1584261890355</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1584261890355</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add git link">
+      <created>1584262126650</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1584262126650</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="jacoco counter project init" />
+    <MESSAGE value="jacoco counter done" />
+    <MESSAGE value="add git link" />
+    <option name="LAST_COMMIT_MESSAGE" value="add git link" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="652" y="247" key="#com.intellij.ide.util.MemberChooser" timestamp="1584258626524">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="652" y="247" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1584258626524" />
+    <state x="374" y="128" key="CommitChangelistDialog2" timestamp="1584262126561">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="374" y="128" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1584262126561" />
+    <state width="1636" height="589" key="GridCell.Tab.0.bottom" timestamp="1584263496716">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1636" height="589" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1584263496716" />
+    <state width="1636" height="589" key="GridCell.Tab.0.center" timestamp="1584263496715">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1636" height="589" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1584263496715" />
+    <state width="1636" height="589" key="GridCell.Tab.0.left" timestamp="1584263496714">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1636" height="589" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1584263496714" />
+    <state width="1636" height="589" key="GridCell.Tab.0.right" timestamp="1584263496715">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1636" height="589" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1584263496715" />
+    <state x="439" y="264" key="Vcs.Push.Dialog.v2" timestamp="1584262128985">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="439" y="264" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1584262128985" />
+    <state x="618" y="273" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1584258693720">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="618" y="273" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1584258693720" />
+  </component>
+</project>
