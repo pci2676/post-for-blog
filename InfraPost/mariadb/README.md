@@ -18,3 +18,36 @@
     - 루트의 비밀번호를 root으로
   - mariadb:10.4 : 마리아 디비 10.4 버전 사용
 
+## contianer 접속
+
+`$ docker exec -i -t mariadb bash`
+
+`$ mysql -uroot -proot`
+
+### 설정
+
+```
+vim /etc/security/limits.conf
+추가
+```
+
+```
+*               soft    nofile          65535
+*               hard    nofile          65535
+```
+
+#### 시간설정
+
+```bash
+rm /etc/localtime
+ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+```
+
+## 재시작
+
+컨테이너를 재시작 하면 된다.
+
+```bash
+$ docker restart localmariadb
+```
+
