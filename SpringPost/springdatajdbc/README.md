@@ -4,10 +4,9 @@
 
 우아한 테크코스 Lv2를 진행하며 Spring Data JDBC를 사용하게 되었습니다.
 
-MyBatis와 Spring Data JPA는 사용해보았지만 Spring Data JDBC는 처음 사용해 보았습니다.  
-때문에 많은 시행착오를 거쳤습니다.
+Spring Data JDBC는 처음 사용해 보았기 때문에 많은 시행착오를 거쳤습니다.
 
-이 글은 [공식문서](https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/#reference)의 일부분을 참고하여 작성되었습니다.  
+이 글은 [공식문서](https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/#reference)를 참고하여 작성되었습니다.  
 목 마른 사람이 우물을 판다고 한글 문서가 별로 없는 것 같아 고생하다가 Spring Data JDBC를 처음 사용하는 분들에게 도움이 되길 바라면서 글을 작성하였습니다.
 
 만약 더 자세한 내용을 알고 싶으시다면 공식문서를 참고하시면 좋을 것 같습니다.
@@ -25,28 +24,55 @@ Spring Data JDBC에서 엔티티 객체를 생성하는 알고리즘은 3가지�
 
 1. 기본 생성자가 있는 경우 기본생성자를 사용합니다.
    - 다른 생성자가 존재해도 무시하고 최우선 기본생성자를 사용합니다.
-2. 매개변수가 존재하는 단일 생성자가 있다면 단일 생성자를 사용합니다.
-3. 매개변수가 존재하는 생성자가 여러개 있다면 `@PersistenceConstructor` 어노테이션이 적혀있는 생성자를 사용합니다.
+2. 매개변수가 존재하는 생성자가 하나만 존재한다면 해당 생성자를 사용합니다.
+3. 매개변수가 존재하는 생성자가 여러개 있다면 `@PersistenceConstructor` 어노테이션이 적용된 생성자를 사용합니다.
+   - `@PersistenceConstructor`가 존재하지 않고, 기본 생성자가 없다면 `org.springframework.data.mapping.model.MappingInstantiationException`이 발생합니다.
 
 여기서 Spring Data JDBC는 `Reflection` 을 이용해서 엔티티 객체를 복사하기 때문에 생성자의 접근제어자는 `private` 이면 안됩니다. `protected` 혹은 `public` 으로 선언후 사용해야 합니다.
 
-### 엔티티 내부 멤버 변수 값 주입 과정
+### 엔티티 내부 값 주입 과정
 
 Spring Data JDBC는 생성자로 인해 채워지지 않은 필드들에 대해 자동으로 생성된 프로퍼티 접근자(`Property Accessor`)가 다음과 같은 순서로 멤버변수의 값을 채워넣습니다.
 
 1. 엔티티의 식별자를 주입합니다.
-2. 엔티티의 식별자를 이용해 내부적으로 참조중인 순환 객체에 대한 값을 주입합니다.
+2. 엔티티의 식별자를 이용해 참조중인 객체에 대한 값을 주입합니다.
 3. `transient` 로 선언된 필드가 아닌 멤버변수에 대한 값을 주입합니다.
 
-엔티티 맴버변수는 다음과 같은 순서로 주입됩니다.
+엔티티 맴버변수는 다음과 같은 방식으로 주입됩니다.
 
-1. 멤버변수에 `final` 예약어가 있다면 `wither` 메서드를 이용하여 값을 주입합니다.
-2. 해당 멤버변수에 대한 `getter`와 `setter`가 정의되어 있다면 `setter`를 사용하여 주입합니다.
-3. 직접 멤버변수에 주입합니다.
+1. 멤버변수에 `final` 예약어가 있다면(즉, 불변이라면) `wither` 메서드를 이용하여 값을 주입합니다.
+
+   ```java
+   // wither method
+   public Sample withId(Long id) {
+       //내부적으로 기존 생성자를 이용하며 imuttable한 값을 매개변수로 가진다.
+       return new Sample(id, this.sampleName);
+   }
+   ```
+
+   해당 `wither`메서드가 존재하지 않다면 `java.lang.UnsupportedOperationException: Cannot set immutable property ...` 를 발생시킵니다.
+
+2. 해당 멤버변수의 `@AccessType`이 `PROPERTY`라면 `setter`를 사용하여 주입합니다.
+
+   - `setter`가 존재하지 않으면 `java.lang.IllegalArgumentException: No setter available for persistent property`이 발생합니다.
+
+3. 기본적으로 직접 멤버변수에 주입합니다.(`Field 주입`)
+
+#### witherMethod
+
+`withMethod`를 정의하는 경우는 `final`예약어가 있는 `immutable`한 멤버변수가 존재 할 때 입니다.  
+이때 주의해야할 점이 있습니다.
+
+만약 `immutable`한 멤버변수가 n개라면 `witherMethod`또한 **n개 작성**해 주어야 합니다.  
+단순히 `witherMethod` 한개의 매개변수에 여러개의 `immutable` 필드를 주입한다면 `java.lang.UnsupportedOperationException: Cannot set immutable property`를 보게 됩니다.
+
+또한 `witherMethod`의 이름을 잘못 작성해서는 안됩니다.  
+멤버변수의 이름이 `createdAt` 이라면 `witherMethod`의 이름은 멤버변수의 이름을 뒤에 붙힌 `withCreatedAt`으로 작성해야 합니다.  
+테이블 컬럼 이름이 아닌 **멤버 변수명을 따라서 작성**해야합니다.
 
 
 
-### 엔티티 생성 시 가이드 라인
+### 엔티티 생성 가이드 라인
 
 Spring Data JDBC 문서를 보면 JDBC를 이용해서 만드는 객체들에 대한 몇가지 [가이드라인](https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/#mapping.general-recommendations)이 있습니다.
 
@@ -54,11 +80,12 @@ Spring Data JDBC 문서를 보면 JDBC를 이용해서 만드는 객체들에 �
 
 - **불변객체**를 만드려고 노력하라.
 - **모든 매개변수를 가진 생성자**(All Arguments Contructor)를 제공하라
+  - 모든 매개변수를 가진 생성자를 제공하면 `object mapping` 과정중 Property 주입 방식을 건너뜀으로써 최대 30% 빠른 생성이 가능해진다.
 - 생성자 오버로딩으로 인해 `@PersistenceConstructor`을 사용하는 것을 피하기 위해 **팩토리 매서드 패턴**을 사용하라
 - 생성자와 자동 생성된 프로퍼티 접근자(`Property Accessor`)가 객체를 생성할 수 있도록 규약을 지켜라
 - 자동 생성될 식별자 필드(ex. id)를 `final`과 함께 사용하기 위해 `wither`메서드를 사용하라
 - 보일러 플레이트 코드를 피하기 위해 `Lombok`을 사용하라
-  - 모든 매개변수를 가진 생성자의 경우 `Lombok`의 `@AllArgsConstructor`가 좋은 방법이 될 수 있다.
+  - 예를 들어 모든 매개변수를 가진 생성자의 경우 `Lombok`의 `@AllArgsConstructor`가 좋은 방법이 될 수 있다.
 
 
 
@@ -77,7 +104,7 @@ CREATE TABLE CHESSGAME
 );
 ```
 
-저는 아래와 같은 방법이 가장 단순하고 사용하기 편한 방법인것 같습니다.
+개인적으로 아래와 같은 방법이 가장 단순하고 사용하기 편한 방법인것 같습니다.
 
 ```java
 @Table("CHESSGAME")
@@ -116,7 +143,7 @@ public class ChessGame {
 }
 ```
 
-
+물론 성능 향상을 위해 모든 매개변수를 가진 생성자를 제공하는 것도 좋을 것 같습니다.
 
 ## 2. 엔티티에서 사용하는 멤버변수
 

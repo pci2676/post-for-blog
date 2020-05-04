@@ -132,19 +132,30 @@ DROP TABLE IF EXISTS ARTICLE;
 
 CREATE TABLE ARTICLE
 (
-    id BIGINT auto_increment,
+    id         BIGINT auto_increment,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
     primary key (id)
 );
 
 CREATE TABLE COMMENT
 (
-    id         BIGINT auto_increment,
-    article_id BIGINT,
+    id          BIGINT auto_increment,
+    article_id  BIGINT,
     article_key BIGINT,
-    content    varchar(255),
+    content     varchar(255),
     primary key (id)
 );
 
 ALTER TABLE COMMENT
     ADD FOREIGN KEY (article_id)
         REFERENCES ARTICLE (id);
+
+DROP TABLE IF EXISTS SAMPLE;
+
+CREATE TABLE SAMPLE
+(
+    id          BIGINT auto_increment,
+    sample_name varchar(255),
+    created     TIMESTAMP
+);

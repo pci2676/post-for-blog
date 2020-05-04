@@ -25,8 +25,8 @@ class ArticleTest {
 
     @AfterEach
     void tearDown() {
-//        commentRepository.deleteAll();
-//        articleRepository.deleteAll();
+        commentRepository.deleteAll();
+        articleRepository.deleteAll();
     }
 
     @DisplayName("컬럼기본전략과 데이터베이스의 컬럼이 상이한 경우에도 가능하다")
@@ -39,14 +39,14 @@ class ArticleTest {
 
         Article article1 = new Article(Arrays.asList(comment1, comment2, comment3));
 
-        Article article2 = new Article(Arrays.asList(new Comment("jkl")));
-
         //when
         Article save = articleRepository.save(article1);
-        Article save2 = articleRepository.save(article2);
         Article load = articleRepository.findById(save.getId()).orElseThrow(NoSuchElementException::new);
 
         //then
+        System.out.println(save.getCreatedAt());
+        System.out.println(load.getCreatedAt());
+        assertThat(save.getCreatedAt().equals(load.getCreatedAt()));
         assertThat(load.getComments()).hasSize(3);
     }
 }
