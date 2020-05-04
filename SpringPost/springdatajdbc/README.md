@@ -6,8 +6,10 @@
 
 Spring Data JDBC는 처음 사용해 보았기 때문에 많은 시행착오를 거쳤습니다.
 
-이 글은 [공식문서](https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/#reference)를 참고하여 작성되었습니다.  
-목 마른 사람이 우물을 판다고 한글 문서가 별로 없는 것 같아 고생하다가 Spring Data JDBC를 처음 사용하는 분들에게 도움이 되길 바라면서 글을 작성하였습니다.
+이 글은 [공식문서](https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/#reference)를 참고하여 작성되었습니다.   
+문서의 양이 적지는 않아 시리즈로 작성하려 합니다.
+
+한글 문서가 별로 없는 것 같아 고생하다가 Spring Data JDBC를 처음 사용하는 분들에게 도움이 되길 바랍니다.
 
 만약 더 자세한 내용을 알고 싶으시다면 공식문서를 참고하시면 좋을 것 같습니다.
 
@@ -16,7 +18,7 @@ Spring Data JDBC는 처음 사용해 보았기 때문에 많은 시행착오를 
 데이터 베이스는 메모리 DB인 H2를 사용하여 테스트 하였습니다.  
 스프링 부트 버전은 2.2.6 RELEASE 입니다.
 
-게시글에 사용된 예제코드와 테스트코드는 [GitHub]()에서 확인하실 수 있습니다.
+게시글에 사용된 예제코드와 테스트코드는 [GitHub](https://github.com/pci2676/post-for-blog/tree/master/SpringPost/springdatajdbc)에서 확인하실 수 있습니다.
 
 ## 1. 엔티티(Entity) 생성
 
