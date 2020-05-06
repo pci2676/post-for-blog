@@ -29,25 +29,25 @@ class EnumEntityTest {
     @Test
     void save() {
         //given
-        EnumEntity enumEntity = new EnumEntity(Active.TRUE);
+        EnumEntity enumEntity = new EnumEntity(Active.Y);
         EnumEntity save = enumEntityRepository.save(enumEntity);
 
         //when
         EnumEntity entity = enumEntityRepository.findById(save.getId()).orElseThrow(NoSuchElementException::new);
 
         //then
-        assertThat(entity.getActive()).isEqualTo(Active.TRUE);
+        assertThat(entity.getActive()).isEqualTo(Active.Y);
     }
 
     @DisplayName("Enum의 name으로 저장되어 있다.")
     @Test
     void load() {
         //given
-        EnumEntity enumEntity = new EnumEntity(Active.TRUE);
+        EnumEntity enumEntity = new EnumEntity(Active.Y);
         EnumEntity save = enumEntityRepository.save(enumEntity);
 
         //when
-        List<EnumEntity> allByActive = enumEntityRepository.findAllByActive(Active.TRUE.name());
+        List<EnumEntity> allByActive = enumEntityRepository.findAllByActive(Active.Y.name());
 
         //then
         assertThat(allByActive).hasSize(1);

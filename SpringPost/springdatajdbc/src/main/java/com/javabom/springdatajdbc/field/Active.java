@@ -1,22 +1,21 @@
 package com.javabom.springdatajdbc.field;
 
 public enum Active {
-    TRUE("Y", true),
-    FALSE("N", false);
+    Y(true),
+    N(false);
 
-    private final String message;
     private final boolean value;
 
-    Active(final String message, final boolean value) {
-        this.message = message;
+    Active(final boolean value) {
         this.value = value;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public boolean value() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return this.name();
     }
 }
