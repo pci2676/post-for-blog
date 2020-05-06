@@ -26,12 +26,11 @@ Spring Data JDBC는 처음 사용해 보았기 때문에 많은 시행착오를 
    - [엔티티 내부 값 주입 과정](#엔티티-내부-값-주입-과정)
      - [witherMethod](#withermethod)
    - [엔티티 생성 가이드 라인](#엔티티-생성-가이드-라인)
-2. [엔티티에서 사용 할 수 있는 변수타입]()
-   - [1 : 1 관계 (OneToOne)]()
-     - [embadded로 VO 표현하기]()
-   - [1 : N 관계 (OneToMany)]()
-     - [embadded로 일급 컬렉션 표현하기]()
-     - [Set이 아닌 다른 Collection 사용하기]()
+2. [엔티티에서 사용 할 수 있는 변수타입](#2-엔티티에서-사용할수-있는-변수타입)
+   - [1 : 1 관계 (OneToOne)](#1--1-관계-onetoone)
+     - [embadded로 VO 표현하기](#embadded를-이용한-vo-표현하기)
+   - [1 : N 관계 (OneToMany)](#1--n-관계-onetomany)
+     - [embadded로 일급 컬렉션 표현하기](#embadded를-이용한-일급컬렉션-표현)
 
 ## 1. 엔티티(Entity) 생성
 
@@ -173,9 +172,8 @@ public class ChessGame {
   (
       id     BIGINT auto_increment,
       active varchar(255),
-      primary key (id)
-  
-)
+      primary key (id) 
+  )
   ```
   
   ```java
