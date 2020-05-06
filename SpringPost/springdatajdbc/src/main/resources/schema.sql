@@ -159,3 +159,24 @@ CREATE TABLE SAMPLE
     sample_name varchar(255),
     created     TIMESTAMP
 );
+
+DROP TABLE IF EXISTS RACING_CAR;
+DROP TABLE IF EXISTS RACING_GAME;
+
+CREATE TABLE RACING_GAME
+(
+    id BIGINT AUTO_INCREMENT,
+    primary key (id)
+);
+
+CREATE TABLE RACING_CAR
+(
+    id          BIGINT AUTO_INCREMENT,
+    racing_game BIGINT,
+    car_name    VARCHAR(255),
+    primary key (id)
+);
+
+ALTER TABLE RACING_CAR
+    ADD FOREIGN KEY (racing_game)
+        REFERENCES RACING_GAME (id);
