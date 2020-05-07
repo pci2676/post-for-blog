@@ -1,4 +1,4 @@
-package com.javabom.springdatajdbc.embadded.onetomany;
+package com.javabom.springdatajdbc.embedded.onetomany;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Embedded;

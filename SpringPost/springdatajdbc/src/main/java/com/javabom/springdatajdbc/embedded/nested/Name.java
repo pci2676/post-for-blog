@@ -1,4 +1,4 @@
-package com.javabom.springdatajdbc.embadded.nested;
+package com.javabom.springdatajdbc.embedded.nested;
 
 /**
  * embedded Entity 이다.

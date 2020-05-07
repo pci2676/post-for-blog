@@ -9,7 +9,7 @@ Spring Data JDBC는 처음 사용해 보았기 때문에 많은 시행착오를 
 이 글은 [공식문서](https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/#reference)를 참고하여 작성되었습니다.   
 문서의 양이 적지는 않아 시리즈로 작성하려 합니다.
 
-한글 문서가 별로 없는 것 같아 고생하다가 Spring Data JDBC를 처음 사용하는 분들에게 도움이 되길 바랍니다.
+한글 문서가 별로 없는 것 같아 고생하다가 Spring Data JDBC를 필자처럼 처음 사용하는 분들에게 도움이 되길 바라는 마음으로 작성하였습니다.
 
 만약 더 자세한 내용을 알고 싶으시다면 공식문서를 참고하시면 좋을 것 같습니다.
 
@@ -28,9 +28,9 @@ Spring Data JDBC는 처음 사용해 보았기 때문에 많은 시행착오를 
    - [엔티티 생성 가이드 라인](#엔티티-생성-가이드-라인)
 2. [엔티티에서 사용 할 수 있는 변수타입](#2-엔티티에서-사용할수-있는-변수타입)
    - [1 : 1 관계 (OneToOne)](#1--1-관계-onetoone)
-     - [embadded로 VO 표현하기](#embadded를-이용한-vo-표현하기)
+     - [embedded로 VO 표현하기](#embedded를-이용한-vo-표현하기)
    - [1 : N 관계 (OneToMany)](#1--n-관계-onetomany)
-     - [embadded로 일급 컬렉션 표현하기](#embadded를-이용한-일급컬렉션-표현)
+     - [embedded로 일급 컬렉션 표현하기](#embedded를-이용한-일급컬렉션-표현)
 
 ## 1. 엔티티(Entity) 생성
 
@@ -254,8 +254,8 @@ public class ChessGame {
           //then
           assertThat(allByActive).hasSize(1);
       }
-  ```
-  
+```
+
 - `java.util.Date`, `java.time.LocalDate`, `java.time.LocalDateTime`, 그리고 `java.time.LocalTime`이 사용가능합니다.
 
 - 사용하는 데이터베이스가 지원을 한다면 위에 언급한 타입들의 배열 혹은 Collection 타입을 사용할 수 도 있습니다.
@@ -332,13 +332,14 @@ public class SubOne {
 }
 ```
 
-### Embadded를 이용한 VO 표현하기 
+### Embedded를 이용한 VO 표현하기 
 
 - 하나의 테이블에서 파생된 `embedded` 엔티티의 경우 **`id` 필드는 사용할 수 없습니다.**  
   **같은 테이블**에서 몇가지 컬럼을 모아 `embedded`를 이용해 표현하였기 때문입니다.
   
-아래 예시에서는 `MEMBER`의 일부분인 `first_name`과 `last_name`을 `embadded` 엔티티로 표현하고 있습니다.
-  
+
+아래 예시에서는 `MEMBER`의 일부분인 `first_name`과 `last_name`을 `embedded` 엔티티로 표현하고 있습니다.
+
   ```sql
   CREATE TABLE MEMBER
   (
@@ -348,7 +349,7 @@ public class SubOne {
       primary key (id)
   );
   ```
-  
+
   ```java
   public class Member {
       @Id
@@ -598,9 +599,9 @@ public class SubOne {
   }
   ```
 
-### Embadded를 이용한 일급컬렉션 표현 
+### Embedded를 이용한 일급컬렉션 표현 
 
-- 단일관계가 아닌 `OneToMany`와 같은 상황에서 `Embadded` 를 이용해서 일급컬렉션을 표현할 수 있습니다.
+- 단일관계가 아닌 `OneToMany`와 같은 상황에서 `Embedded` 를 이용해서 일급컬렉션을 표현할 수 있습니다.
 
   ```sql
   CREATE TABLE RACING_GAME

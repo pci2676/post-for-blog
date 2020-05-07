@@ -1,4 +1,4 @@
-package com.javabom.springdatajdbc.embadded.onetomany;
+package com.javabom.springdatajdbc.embedded.onetomany;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
