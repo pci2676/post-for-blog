@@ -1,4 +1,4 @@
-package com.javabom.springdatajdbc.embadded.nested;
+package com.javabom.springdatajdbc.embedded.nested;
 
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,4 +1,4 @@
-package com.javabom.springdatajdbc.embadded.nested;
+package com.javabom.springdatajdbc.embedded.nested;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

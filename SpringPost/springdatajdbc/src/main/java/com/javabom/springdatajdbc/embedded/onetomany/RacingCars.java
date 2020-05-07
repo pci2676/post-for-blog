@@ -1,4 +1,4 @@
-package com.javabom.springdatajdbc.embadded.onetomany;
+package com.javabom.springdatajdbc.embedded.onetomany;
 
 import java.util.HashSet;
 import java.util.Set;
