@@ -12,7 +12,7 @@ public class Sample {
     private final LocalDateTime createdAt;
     private String sampleName;
 
-    protected Sample() {
+    private Sample() {
         this.id = null;
         this.createdAt = null;
     }

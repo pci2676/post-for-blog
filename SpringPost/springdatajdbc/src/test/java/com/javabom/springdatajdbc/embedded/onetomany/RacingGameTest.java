@@ -18,6 +18,9 @@ class RacingGameTest {
     @Autowired
     private RacingGameRepository racingGameRepository;
 
+    @Autowired
+    private RacingCarRepository racingCarRepository;
+
     @Test
     void name() {
         //given
@@ -35,4 +38,5 @@ class RacingGameTest {
         assertThat(findRacingGame.getId()).isNotNull();
         assertThat(findRacingGame.getRacingCars()).hasSize(2);
     }
+
 }

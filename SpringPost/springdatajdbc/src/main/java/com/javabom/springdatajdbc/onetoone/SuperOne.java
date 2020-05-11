@@ -8,7 +8,7 @@ public class SuperOne {
     private String superName;
     private SubOne subOne;
 
-    protected SuperOne() {
+    private SuperOne() {
     }
 
     public SuperOne(final String superName, final SubOne subOne) {

@@ -10,7 +10,7 @@ public class Name {
     private String firstName;
     private String lastName;
 
-    protected Name() {
+    private Name() {
     }
 
     public Name(final String firstName, final String lastName) {

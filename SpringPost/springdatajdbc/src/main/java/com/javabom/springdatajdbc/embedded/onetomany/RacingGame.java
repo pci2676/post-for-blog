@@ -12,7 +12,7 @@ public class RacingGame {
     @Embedded.Nullable
     private RacingCars racingCars;
 
-    protected RacingGame() {
+    private RacingGame() {
     }
 
     public RacingGame(final RacingCars racingCars) {

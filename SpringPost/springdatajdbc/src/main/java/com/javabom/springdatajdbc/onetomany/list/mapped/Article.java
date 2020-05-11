@@ -17,7 +17,7 @@ public class Article {
     @MappedCollection(idColumn = "article_id", keyColumn = "article_key")
     private List<Comment> comments;
 
-    public Article() {
+    private Article() {
     }
 
     public Article(final List<Comment> comments) {
