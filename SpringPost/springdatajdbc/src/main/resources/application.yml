@@ -2,3 +2,7 @@ spring:
   h2:
     console:
       enabled: true
+  data:
+    jdbc:
+      repositories:
+        enabled: true

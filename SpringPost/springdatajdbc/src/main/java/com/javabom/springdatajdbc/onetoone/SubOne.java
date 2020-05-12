@@ -10,7 +10,7 @@ public class SubOne {
     // private Long superOne;
     private String subName;
 
-    protected SubOne() {
+    private SubOne() {
     }
 
     public SubOne(final String subName) {

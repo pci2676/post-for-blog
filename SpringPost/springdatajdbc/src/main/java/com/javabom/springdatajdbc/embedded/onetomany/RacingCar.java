@@ -7,7 +7,7 @@ public class RacingCar {
     private Long id;
     private String carName;
 
-    protected RacingCar() {
+    private RacingCar() {
     }
 
     public RacingCar(final String carName) {

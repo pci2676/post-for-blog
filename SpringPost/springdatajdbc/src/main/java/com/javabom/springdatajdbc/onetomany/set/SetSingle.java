@@ -10,7 +10,7 @@ public class SetSingle {
 
     private Set<SetMany> manies;
 
-    protected SetSingle() {
+    private SetSingle() {
     }
 
     public SetSingle(final Set<SetMany> manies) {

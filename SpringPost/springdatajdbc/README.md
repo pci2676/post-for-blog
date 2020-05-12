@@ -42,7 +42,7 @@ Spring Data JDBC에서 엔티티 객체를 생성하는 알고리즘은 3가지�
 3. 매개변수가 존재하는 생성자가 여러개 있다면 `@PersistenceConstructor` 어노테이션이 적용된 생성자를 사용합니다.
    - `@PersistenceConstructor`가 존재하지 않고, 기본 생성자가 없다면 `org.springframework.data.mapping.model.MappingInstantiationException`이 발생합니다.
 
-여기서 Spring Data JDBC는 `Reflection` 을 이용해서 엔티티 객체를 복사하기 때문에 생성자의 접근제어자는 `private` 이면 안됩니다. `protected` 혹은 `public` 으로 선언후 사용해야 합니다.
+여기서 기본 생성자를 `private`접근 제어자로 선언해도 정상적으로 잘 작동합니다
 
 ### 엔티티 내부 값 주입 과정
 
@@ -118,7 +118,7 @@ CREATE TABLE CHESSGAME
 );
 ```
 
-개인적으로 아래와 같은 방법이 가장 단순하고 사용하기 편한 방법인것 같습니다.
+**롬복을 사용하지 않는다면** 개인적으로 아래와 같은 방법이 가장 단순하고 사용하기 편한 방법인것 같습니다.
 
 ```java
 @Table("CHESSGAME")
@@ -128,13 +128,13 @@ public class ChessGame {
     private String name;
     private boolean active;
 
-    protected ChessGame() {
+    private ChessGame() {
     }
 
 }
 ```
 
-객체 생성을 위한 기본생성자를 선언하고 접근 제어자는 `protected`로 선언해 두고 사용하는 것입니다.  
+객체 생성을 위한 기본생성자를 선언하고 접근 제어자는 `private`로 선언해 두고 사용하는 것입니다.  
 
 이후 필요에 따라 아래와 같이 생성자를 추가하거나 정적 팩터리 메서드를 생성하여 사용하면 좋을 것 같습니다.
 
@@ -146,7 +146,7 @@ public class ChessGame {
     private String name;
     private boolean active;
 
-    protected ChessGame() {
+    private ChessGame() {
     }
 		
   	//실제 사용될 생성자
@@ -157,7 +157,32 @@ public class ChessGame {
 }
 ```
 
-물론 성능 향상을 위해 모든 매개변수를 가진 생성자를 제공하는 것도 좋을 것 같습니다.
+다만 **롬복을 사용한다면** 아래와 같이 전체 맴버변수를 가지는 생성자를 항상 최신화 하며 `@Builder`를 사용하고 `@PersistenceConstructor` 를 같이 사용하는것이 성능 면에서 좋을 것 같습니다.
+
+```java
+@Table("CHESSGAME")
+public class ChessGame {
+    @Id
+    private Long id;
+    private String name;
+    private boolean active;
+
+  	@Builder
+  	@PersistenceConstructor
+    public ChessGame(final Long id, final String name, final boolean active) {
+				this.id = id
+      	this.name = name;
+        this.active = active;
+    }
+  
+    public ChessGame(final String name, final boolean active) {
+        this.name = name;
+        this.active = active;
+    }
+}
+```
+
+
 
 ## 2. 엔티티에서 사용할수 있는 변수타입
 
@@ -294,7 +319,7 @@ public class SuperOne {
     private String superName;
     private SubOne subOne;
 
-    protected SuperOne() {
+    private SuperOne() {
     }
 
     public SuperOne(final String superName, final SubOne subOne) {
@@ -319,7 +344,7 @@ public class SubOne {
     // private Long superOne;
     private String subName;
 
-    protected SubOne() {
+    private SubOne() {
     }
 
     public SubOne(final String subName) {
@@ -358,7 +383,7 @@ public class SubOne {
       @Embedded.Nullable // Embedded라고 선언해야한다.
       private Name name;
   
-      protected Member() {
+      private Member() {
     }
   
       public Member(final Name name) {
@@ -379,7 +404,7 @@ public class SubOne {
       private String firstName;
       private String lastName;
   
-      protected Name() {
+      private Name() {
       }
   
       public Name(final String firstName, final String lastName) {
@@ -429,7 +454,7 @@ public class SubOne {
   
       private Set<SetMany> manies;
   
-      protected SetSingle() {
+      private SetSingle() {
       }
   
       public SetSingle(final Set<SetMany> manies) {
@@ -631,7 +656,7 @@ public class SubOne {
       @Embedded.Nullable
       private RacingCars racingCars;
   
-      protected RacingGame() {
+      private RacingGame() {
       }
   
       public RacingGame(final RacingCars racingCars) {
@@ -665,7 +690,7 @@ public class SubOne {
       private Long id;
       private String carName;
   
-      protected RacingCar() {
+      private RacingCar() {
       }
   
       public RacingCar(final String carName) {
@@ -691,7 +716,7 @@ Column이름과 기본전략이 상이한 경우 다음과 같이 사용할 수 
 
 `@MappedCollection`를 이용하여 문제를 해결할 수 있습니다.
 
-## CustomConversion 사용하기
+## 3. CustomConversion 사용하기
 
 사실 엔티티에 객체를 맵핑하는것은 그리 큰 문제가 아닙니다.
 

@@ -10,7 +10,7 @@ public class ChessGame {
     private String name;
     private boolean active;
 
-    protected ChessGame() {
+    private ChessGame() {
     }
 
     public ChessGame(final String name, final boolean active) {

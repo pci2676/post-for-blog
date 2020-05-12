@@ -10,7 +10,7 @@ public class Member {
     @Embedded.Nullable
     private Name name;
 
-    protected Member() {
+    private Member() {
     }
 
     public Member(final Name name) {
