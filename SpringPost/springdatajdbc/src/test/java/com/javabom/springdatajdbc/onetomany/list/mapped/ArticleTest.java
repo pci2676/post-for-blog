@@ -94,4 +94,24 @@ class ArticleTest {
         List<Comment> comments = article.getComments();
         assertThat(comments).hasSize(3);
     }
+
+    @DisplayName("Update 하려면 조회후 save 해야한다.")
+    @Test
+    void save4() {
+        //given
+        Comment comment1 = new Comment("1");
+        Comment comment2 = new Comment("2");
+
+        Article article = new Article(new ArrayList<>(Arrays.asList(comment1, comment2)));
+        article = articleRepository.save(article);
+
+        //when
+        Comment comment = commentRepository.findById(1L).orElseThrow(RuntimeException::new);
+        comment.updateContent("22");
+        Comment save = commentRepository.save(comment);
+
+        //then
+        assertThat(save.getCreatedAt()).isNull();
+        assertThat(save.getUpdatedAt()).isNotNull();
+    }
 }

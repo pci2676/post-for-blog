@@ -48,4 +48,7 @@ public class Comment {
         return updatedAt;
     }
 
+    public void updateContent(final String content) {
+        this.content = content;
+    }
 }

@@ -945,3 +945,48 @@ INSERT 쿼리가 3번 발생하는 것을 확인할 수 있습니다.
 
 따라서 자식 엔티티에서 `@CreatedDate`과 `@LastModifiedDate`의 Audit은 사용할 수 가 없고 자식 엔티티의 생성 시간은 부모 엔티티의 `@LastModifiedDate` 와 동일하게 여기면 됩니다.
 
+이렇게 전부 DELETE 후 INSERT 한다는 내용은 공식문서에 다음과 같이 기재되어있습니다.
+
+```java
+If the aggregate root is not new, all referenced entities get deleted, the aggregate root gets updated, and all referenced entities get inserted again. Note that whether an instance is new is part of the instance’s state.
+```
+
+그리고 바로 다음 다음과 같이 이 부분에 대해 설명하는 글 이 적혀있습니다.
+
+```java
+This approach has some obvious downsides. If only few of the referenced entities have been actually changed, the deletion and insertion is wasteful. While this process could and probably will be improved, there are certain limitations to what Spring Data JDBC can offer. It does not know the previous state of an aggregate. So any update process always has to take whatever it finds in the database and make sure it converts it to whatever is the state of the entity passed to the save method.
+```
+
+분명한 단점이 있고 Spring Data JDBC가 이 부분에 대해 개선 할 수도 있다고 되어있습니다.  
+현재 이렇게 구현되어 있는 이유는 Spring Data JDBC는 저장되어 있던 이전 상태들을 알지 못해서 위와 같이 동작한다고 되어있습니다.  
+결국 UPDATE 를 하고 싶다면 해당 엔티티를 조회후 수정한다음 `save()` 메서드를 통해 업데이트를 해야 합니다.
+
+따라서 아래와 같이 Comment의 내용을 수정하는 테스트를 작성한다면
+
+```java
+    @DisplayName("Update 하려면 조회후 save 해야한다.")
+    @Test
+    void save4() {
+        //given
+        Comment comment1 = new Comment("1");
+        Comment comment2 = new Comment("2");
+
+        Article article = new Article(new ArrayList<>(Arrays.asList(comment1, comment2)));
+        article = articleRepository.save(article);
+
+        //when
+        Comment comment = commentRepository.findById(1L).orElseThrow(RuntimeException::new);
+        comment.updateContent("22");
+        Comment save = commentRepository.save(comment);
+
+        //then
+        assertThat(save.getCreatedAt()).isNull();
+        assertThat(save.getUpdatedAt()).isNotNull();
+    }
+```
+
+정상적으로 UPDATE 쿼리가 발생하는 것을 확인할 수 있습니다.
+
+![image](https://user-images.githubusercontent.com/13347548/82152277-03d70f00-989b-11ea-8200-a62d87aa2e8c.png)
+
+또한 `@LastModifedDate` 의 Audit이 적용되는 것을 볼 수 있습니다.
