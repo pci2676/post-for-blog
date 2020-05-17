@@ -1,6 +1,10 @@
 package com.javabom.springdatajdbc.onetomany.list.mapped;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDateTime;
 
 public class Comment {
     @Id
@@ -10,6 +14,12 @@ public class Comment {
 
     private String content;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     public Comment() {
     }
 
@@ -17,4 +27,25 @@ public class Comment {
         this.articleId = articleId;
         this.content = content;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getArticleId() {
+        return articleId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
 }

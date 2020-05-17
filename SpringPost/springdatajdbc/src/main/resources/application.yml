@@ -6,3 +6,10 @@ spring:
     jdbc:
       repositories:
         enabled: true
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core:
+            JdbcTemplate: debug

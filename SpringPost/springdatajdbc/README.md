@@ -9,7 +9,7 @@ Spring Data JDBC는 처음 사용해 보았기 때문에 많은 시행착오를 
 이 글은 [공식문서](https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/#reference)를 참고하여 작성되었습니다.   
 문서의 양이 적지는 않아 시리즈로 작성하려 합니다.
 
-한글 문서가 별로 없는 것 같아 고생하다가 Spring Data JDBC를 필자처럼 처음 사용하는 분들에게 도움이 되길 바라는 마음으로 작성하였습니다.
+한글 문서가 별로 없어서 고생하다가 Spring Data JDBC를 필자처럼 처음 사용하는 분들에게 도움이 되길 바라는 마음으로 작성하였습니다.
 
 만약 더 자세한 내용을 알고 싶으시다면 공식문서를 참고하시면 좋을 것 같습니다.
 
@@ -32,7 +32,7 @@ Spring Data JDBC는 처음 사용해 보았기 때문에 많은 시행착오를 
    - [1 : N 관계 (OneToMany)](#1--n-관계-onetomany)
      - [embedded로 일급 컬렉션 표현하기](#embedded를-이용한-일급컬렉션-표현)
 
-## 1. 엔티티(Entity) 생성
+## 1. 엔티티(Entity) 생성 (1.1.7 RELEASE)
 
 Spring Data JDBC에서 엔티티 객체를 생성하는 알고리즘은 3가지입니다.
 
@@ -184,7 +184,7 @@ public class ChessGame {
 
 
 
-## 2. 엔티티에서 사용할수 있는 변수타입
+## 2. 엔티티에서 사용할수 있는 변수타입 (1.1.7 RELEASE)
 
 - 기본적으로 원시타입과 그 참조타입은 모두 사용 가능합니다.
 
@@ -359,9 +359,8 @@ public class SubOne {
 
 ### Embedded를 이용한 VO 표현하기 
 
-- 하나의 테이블에서 파생된 `embedded` 엔티티의 경우 **`id` 필드는 사용할 수 없습니다.**  
+- 하나의 테이블에서 파생된 `embedded` 엔티티의 경우 당연하게도 **`id` 필드는 사용할 수 없습니다.**  
   **같은 테이블**에서 몇가지 컬럼을 모아 `embedded`를 이용해 표현하였기 때문입니다.
-  
 
 아래 예시에서는 `MEMBER`의 일부분인 `first_name`과 `last_name`을 `embedded` 엔티티로 표현하고 있습니다.
 
@@ -563,8 +562,10 @@ public class SubOne {
   }
   ```
 
-- `List` 의 경우 `Map<Integer, Entity>` 처럼 동작한다고 보면됩니다.
+- `List` 의 경우 `Map<Integer, Entity>` 처럼 동작한다고 보면됩니다. 
 
+  - 이 경우 `key` 로 사용되는 컬럼이 `List`의 순서를 보장해줍니다.
+  
   ```sql
   CREATE TABLE LIST_SINGLE
   (
@@ -583,9 +584,9 @@ public class SubOne {
   
   ALTER TABLE LIST_MANY
       ADD FOREIGN KEY (list_single)
-          REFERENCES LIST_SINGLE (id);
+        REFERENCES LIST_SINGLE (id);
   ```
-
+  
   ```java
   public class ListSingle {
       @Id
@@ -716,7 +717,231 @@ Column이름과 기본전략이 상이한 경우 다음과 같이 사용할 수 
 
 `@MappedCollection`를 이용하여 문제를 해결할 수 있습니다.
 
-## 3. CustomConversion 사용하기
+### 일대다 연관관계에서 @CreatedDate, @LastModifiedDate 사용하기
 
-사실 엔티티에 객체를 맵핑하는것은 그리 큰 문제가 아닙니다.
+JPA와 마찬가지로 Spring Data JDBC 도 Auditing을 제공합니다.  
+따라서 엔티티의 생성시각과 수정시각을 `@CreateDate`와 `@LastModifiedDate`를 이용해서 자동으로 관리해 줄 수 있습니다.
+
+생성일과 수정일로 관리할 컬럼에 아래와 같이 어노테이션을 작성합니다.
+
+```java
+public class Article {
+    @Id
+    private Long id;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    @MappedCollection(idColumn = "article_id", keyColumn = "article_key")
+    private List<Comment> comments;
+
+    private Article() {
+    }
+
+    public Article(final List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+}
+```
+
+그 다음 `@EnableJdbcAuditing`을 이용해서 Audit 기능을 활성화시켜주면 끝입니다.
+
+```java
+@EnableJdbcAuditing
+@Configuration
+public class ApplicationListenerConfiguration {
+
+}
+```
+
+아래는 테스트 코드입니다.
+
+```java
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+class ArticleTest {
+
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @AfterEach
+    void tearDown() {
+        commentRepository.deleteAll();
+        articleRepository.deleteAll();
+    }
+
+    @DisplayName("컬럼기본전략과 데이터베이스의 컬럼이 상이한 경우에도 가능하다")
+    @Test
+    void save() {
+        //given
+        Comment comment1 = new Comment("asdf");
+        Comment comment2 = new Comment("qwer");
+        Comment comment3 = new Comment("zxcv");
+
+        Article article1 = new Article(Arrays.asList(comment1, comment2, comment3));
+
+        //when
+        Article save = articleRepository.save(article1);
+        Article load = articleRepository.findById(save.getId()).orElseThrow(NoSuchElementException::new);
+
+        //then
+        System.out.println(save.getCreatedAt());
+        System.out.println(load.getCreatedAt());
+        assertThat(save.getCreatedAt().equals(load.getCreatedAt()));
+        assertThat(load.getComments()).hasSize(3);
+    }
+}
+```
+
+표준출력으로 출력한 두줄이 있는데요.  
+이 두줄을 확인하면 다른 점이 있습니다.
+
+![image](https://user-images.githubusercontent.com/13347548/82149661-1731ac80-9892-11ea-90b2-0fcb8acefbe4.png)
+
+코드상에서 자동으로 생성된 LocalDateTime과 DB에서 조회한 LocalDateTime이 조금 다른 것을 확인할 수 있습니다.  
+DB에는 시간 데이터가 조금 절삭되어 저장이 되기때문에 윈도우 환경에서는 위 테스트가 실패할 수 있습니다.
+
+이때 자식 엔티티에게도 생성일과 수정일을 관리하고 싶어서 `@CreatedDate`와 `@LastModifiedDate`를 사용 할 수 있는데요.  
+Spring Data JDBC의 컨셉상 자식 엔티티에서는 Auditing기능을 사용할 수 없었습니다.
+
+```java
+public class Comment {
+    @Id
+    private Long id;
+
+    private Long articleId;
+
+    private String content;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    public Comment() {
+    }
+
+    public Comment(final String content) {
+        this.articleId = articleId;
+        this.content = content;
+    }
+
+   // ... getter
+
+}
+```
+
+위와 같이 Comment 엔티티를 만들고 아래 테스트 코드를 실행해보면 자식인 Comment 엔티티에겐 Audit 정보가 들어가지 않는 것을 확인 할 수 있습니다.
+
+```java
+    @DisplayName("자식 Entity는 Audit 기능을 사용할 수 없다.")
+    @Test
+    void save2() {
+        //given
+        Comment comment1 = new Comment("1");
+        Comment comment2 = new Comment("2");
+
+        Article article = new Article(Arrays.asList(comment1, comment2));
+
+        //when
+        article = articleRepository.save(article);
+
+        //then
+        assertThat(article.getComments().get(0).getCreatedAt()).isNull();
+        assertThat(article.getComments().get(0).getUpdatedAt()).isNull();
+        System.out.println(gson.toJson(article));
+    }
+```
+
+![image](https://user-images.githubusercontent.com/13347548/82150396-9a9fcd80-9893-11ea-9b06-09ae15371f2f.png)
+
+출력결과에서도 Audit 정보가 null이라 출력되지 않는 것을 볼 수 있습니다.
+
+Spring Data JDBC에서 자식 엔티티는 부모 엔티티의 생명주기를 그대로 따라가도록 설계가 되어있습니다.
+
+따라서 부모 엔티티에 새로운 자식 엔티티를 추가한다면 INSERT 쿼리가 한번 발생하는 것이 아니라 부모에게 속해있던 자식 엔티티를 전부 DELETE 후 다시 전부 INSERT하는 쿼리가 발생하는 것을 확인 할 수 있습니다.
+
+`application.yml`에 쿼리 확인을 위해 다음 설정값을 추가하여 확인해 보도록 하겠습니다.
+
+```yml
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core:
+            JdbcTemplate: debug
+```
+
+쿼리를 확인하기 위해 간단히 자식 엔티티를 추가후 잘 추가되었는지 확인하는 테스트를 작성해 보겠습니다.
+
+```java
+    @DisplayName("자식 Entity가 추가될때 전부 DELETE 후 전부 INSERT를 진행한다. ")
+    @Test
+    void save3() {
+        //given
+        Comment comment1 = new Comment("1");
+        Comment comment2 = new Comment("2");
+
+        Article article = new Article(new ArrayList<>(Arrays.asList(comment1, comment2)));
+        article = articleRepository.save(article);
+
+        //when
+        System.out.println("\n##################\n");
+        Comment comment3 = new Comment("3");
+        article.addComment(comment3);
+
+        article = articleRepository.save(article);
+
+        //then
+        List<Comment> comments = article.getComments();
+        assertThat(comments).hasSize(3);
+    }
+```
+
+테스트는 정상적으로 잘 작동하는 것을 확인 할 수 있고 이제 디버그 로그를 통해 쿼리가 어떻게 발생했는지 확인해 보겠습니다.
+
+![image](https://user-images.githubusercontent.com/13347548/82151246-8fe63800-9895-11ea-9f3c-172bd7118795.png)
+
+`###` 을 기준으로 아래로 발생한 쿼리를 확인하시면 됩니다.
+
+로그를 보면 알수 있듯 
+
+```sql
+[DELETE FROM comment WHERE comment.article_id = ?]
+```
+
+DELETE 쿼리가 먼저 실행된 후
+
+```sql
+[INSERT INTO comment (article_id, content, created_at, updated_at, id, article_key) VALUES (?, ?, ?, ?, ?, ?)]
+```
+
+INSERT 쿼리가 3번 발생하는 것을 확인할 수 있습니다.
+
+따라서 자식 엔티티에서 `@CreatedDate`과 `@LastModifiedDate`의 Audit은 사용할 수 가 없고 자식 엔티티의 생성 시간은 부모 엔티티의 `@LastModifiedDate` 와 동일하게 여기면 됩니다.
 

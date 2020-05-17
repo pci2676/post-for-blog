@@ -144,6 +144,8 @@ CREATE TABLE COMMENT
     article_id  BIGINT,
     article_key BIGINT,
     content     varchar(255),
+    created_at  TIMESTAMP,
+    updated_at  TIMESTAMP,
     primary key (id)
 );
 
