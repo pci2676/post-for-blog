@@ -73,6 +73,8 @@
 
 그런데 왜 핸들러를 추가했다고 `static` 경로에 있던 `index.html` 을 찾지 못하게 된 것 일까요?
 
+### WebMvcConfiguration
+
 조금 전 기본적으로 Spring boot 가 제공하는 기능을 위해 `WebMvcConfigurer`를 `implements` 를 했었습니다.  
 이때 기본적으로 제공하는 기능은 `WebMvcAutoConfiguration`가 제공해줍니다.
 
