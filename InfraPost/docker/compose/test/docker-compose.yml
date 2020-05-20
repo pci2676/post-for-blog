@@ -1,0 +1,15 @@
+version: '3'
+services:
+  maria:
+    image: mariadb
+    container_name: local-maria
+    restart: always
+    ports:
+      - 13306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: project-ward
+      TZ: Asia/Seoul
+    volumes:
+      - ./docker/maria/data:/var/lib/mysql
+      - ./docker/maria/init:/docker-entrypoint-initdb.d

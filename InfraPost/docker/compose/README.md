@@ -15,11 +15,14 @@ Docker Compose를 사이드 프로젝트하며 인프라 설정을 도와준 친
 하지만 꼭 여러개의 컨테이너를 정의, 실행 할 때만 사용하는 것은 아니고 한 가지 컨테이너만을 사용 할 때도  
 충분히 유용하게 사용할 수 있는것 같습니다.
 
+예를 들면 Maria-db, jenkins, reddis 를 동시에 생성, 실행할수 있도록 해주는 것입니다.
+
 ### 도커 컴포즈 준비하기
 
 도커 컴포즈는 3단계의 진행 순서를 가지고 있습니다.
 
-1. `Dockerfile`에 구동시킬 앱 환경을 정의합니다. 이로써 어디서든 재활용이 가능해집니다.  
+1. `Dockerfile`에 구동시킬 앱 환경을 정의합니다.  
+   `docker-compose.yml`에서 service에 명시한 build 하위옵션인 dockerfile에서 사용할 수 있습니다.
 
    ```dockerfile
    # Dockerfile example
@@ -30,9 +33,10 @@ Docker Compose를 사이드 프로젝트하며 인프라 설정을 도와준 친
 
 2.  `docker-compose.yml` 에 앱을 구성할 서비스들을 정의합니다. 정의된 서비스들은 독립된 환경에서 동시에 실행됩니다.
 
-3.  `docker-compose up` 명령어를 이용해서 작성한 컴포즈를 실행시킵니다.
+3.  `docker-compose up` 명령어를 이용해서 작성한 컴포즈를 실행시킵니다.  
+   `-d`옵션을 줘서 백그라운드에서 실행되게 할 수 있습니다.
 
-### 도커 컴포즈 명령어
+### 도커 컴포즈 명령어 종류
 
 - 서비스 시작, 중지 및 rebuild 하기
 - 실행중인 서비스 상태보기
@@ -72,3 +76,43 @@ default로 설정되는 프로젝트 이름은 프로젝트 디렉토리의 이�
 ## 참고
 
 https://docs.docker.com/compose/
+
+
+
+# Docker Compose 작성하기
+
+아래는 Maria Database를 사용하기 위해 작성한 `docker-compose.yml` 입니다.
+
+```yml
+version: '3'
+services:
+  maria:
+    image: mariadb
+    container_name: local-maria
+    restart: always
+    ports:
+      - 13306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: project-ward
+      TZ: Asia/Seoul
+    volumes:
+      - ./docker/maria/data:/var/lib/mysql
+      - ./docker/maria/init:/docker-entrypoint-initdb.d
+```
+
+Version : compose 파일의 버전을 명시합니다.
+
+Services : 바로 하위에 나오는 이름들이 각 service의 이름이 됩니다. 따라서 maria는 하나의 이름입니다.
+
+Image : 해당 서비스에서 사용될 이미지의 이름을 명시합니다.
+
+Container_name : 해당 이미지를 이용해서 컨테이너를 만들때 노출되는 컨테이너의 이름을 지정합니다.
+
+Restart : 특정 문제로 service가 중단되면 다시 재기동합니다.
+
+Ports : 외부포트:내부포트
+
+Environment : 환경변수를 의미합니다. 각 환경변수는 해당 이미지를 제공하는 도커 사이트에서 확인하면 됩니다.
+
+Volumes : 해당 컨테이너를 실행 할 때 사용되는 volume data의 마운트 위치를 지정합니다. 
