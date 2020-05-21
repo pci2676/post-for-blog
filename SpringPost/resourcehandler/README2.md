@@ -4,14 +4,15 @@
 
 우테코 레벨 2를 진행하면서 웹 페이지, 특히 js를 많이 작성하게 됐습니다.
 
-그러다 보니 정적 파일(특히 js)을 수정하면 Spring boot에서 실행중이던 app을 재시작 해서  
+그러다 보니 정적 파일(특히 js)을 수정하면 Spring boot에서 실행중이던 app을 재시작해서  
 수정된 정적 정보를 다시 불러와야 했습니다.
 
-Spring Dev Tools 의존성을 추가해서 리로드 하는 방식이 있지만  
-빌드를 느려지게 하는데다 개발환경 외에 사용되지 않을 의존성을 추가하고 싶지 않았습니다.
+Spring devtools 의존성을 추가해서 리로드 하는 방식이 있지만  
+빌드를 느려지게 하는데다 개발환경 외에 사용되지 않을 의존성을 추가하고 싶지 않았습니다.  
+~~게다가 필자는 설정해도 됬다 말았다;;~~
 
 얼마전 `WebMvcConfigurer`에서 `resourceHandler`를 다뤘는데  
-이를 이용하면 간단하게 해결이 된다는 것을 알게되어 이를 공유하고자 합니다.
+이를 이용하면 간단하게 해결이 된다는 것을 알게되어 공유하고자 합니다.
 
 ## 바라보는 정적 리소스의 위치 수정하기
 
@@ -31,7 +32,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
 ```
 
-이때 `classpath`는 gradle로 빌드한 `build` 디렉토리의 `resources` 디렉토리를 의미합니다.
+이때 `classpath`는 gradle로 빌드한 결과의 `resources` 디렉토리(ex. build/resources)를 의미합니다.
 
 이제 바라보고 있는 디렉토리를 `file` 키워드를 이용해 아래와 같이 `src/main/resources`로 변경해 주도록 합니다.
 
