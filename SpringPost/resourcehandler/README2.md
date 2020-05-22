@@ -142,7 +142,7 @@ spring:
 
 이렇게 했을때, JVM 옵션으로 `acitve` 값을 주지 않으면, Spring boot를 build 하여 생성되는 jar가 실행될 때 `prod` 환경으로 실행됩니다.
 
-하지만 우리는 local 환경에서 실행하기를 원합니다.  
+하지만 우리는 개발할 때 local 환경에서 실행하기를 원합니다.  
 아래와 같이 IntelliJ에서 JVM 옵션을 설정하고 Spring boot를 실행하도록 합시다.
 
 ![image](https://user-images.githubusercontent.com/13347548/82581258-41090d00-9bcb-11ea-9278-78b90aefe4f7.png)
