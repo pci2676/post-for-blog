@@ -109,10 +109,29 @@ Image : 해당 서비스에서 사용될 이미지의 이름을 명시합니다.
 
 Container_name : 해당 이미지를 이용해서 컨테이너를 만들때 노출되는 컨테이너의 이름을 지정합니다.
 
-Restart : 특정 문제로 service가 중단되면 다시 재기동합니다.
+Restart : (always)특정 문제로 service가 중단되면 다시 재기동합니다.
 
 Ports : 외부포트:내부포트
 
 Environment : 환경변수를 의미합니다. 각 환경변수는 해당 이미지를 제공하는 도커 사이트에서 확인하면 됩니다.
 
 Volumes : 해당 컨테이너를 실행 할 때 사용되는 volume data의 마운트 위치를 지정합니다. 
+
+
+
+# DockerFile 작성하기
+
+Docker에서 제공하는 image(ex. Maria-db, jenkins)는 docker hub에서 제공합니다. 
+
+DockerFile은 docker hub에서 제공하는 공식 이미지에 우리 입맛에 맞도록 커스텀한 설정을 하여 이미지를 빌드 할 수 있도록 해줍니다.
+
+따라서, DockerFile은 이미지에 특정 명령을 실행할 수 있도록 해줍니다.
+
+### 명령어
+
+**FROM**: 어떠한 이미지를 사용할지 명시해줍니다. (ex. FROM openjdk:8-jdk-alpine)
+
+**ADD**: docker를 띄우는 host에 있는 파일을 컨테이너로 추가하는 명령어입니다. (ex. ADD ./professorlol-web/build/libs/*.jar professorlol.jar)
+
+**ENTRYPOINT:** docker start, docker run 하면 실행되는 명령어를 의미합니다. (ex. ENTRYPOINT ["java", "-jar", "/professorlol.jar"])   
+
