@@ -30,7 +30,7 @@
 
 <configuration>
 
-<timestamp key="byDate" datePattern="yyyy-MM-dd"/>
+    <timestamp key="byDate" datePattern="yyyy-MM-dd"/>
     <property name="LOG_PARENT_PATH" value="../log"/>
     <property name="LOG_CHILD_INFO" value="info"/>
     <property name="LOG_CHILD_WARN" value="warn"/>
