@@ -157,6 +157,8 @@ Grade task로 submodule을 update하게 하려 했는데 보통 submodule을 sec
 
 #### 6. Jenkinsfile 작성
 
+Jenkinsfile은 프로젝트 루트 디렉토리에 위치해 있어야 한다.
+
 아래와 같이 파이프라인 스크립트를 작성하자.
 
 ```
