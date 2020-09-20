@@ -1,0 +1,11 @@
+constructor:
+  record-year: 2020
+  name: chan
+  age: 28
+  nick-name: 비밥
+
+basic:
+  record-year: 2020
+  name: chan
+  age: 28
+  nick-name: 비밥

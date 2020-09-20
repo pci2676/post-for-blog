@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class YmlpropertiesbindingApplication {
+public class YmlPropertiesBindingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(YmlpropertiesbindingApplication.class, args);
+		SpringApplication.run(YmlPropertiesBindingApplication.class, args);
 	}
 
 }
