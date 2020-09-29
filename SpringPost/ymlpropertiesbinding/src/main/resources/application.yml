@@ -1,11 +1,20 @@
 constructor:
   record-year: 2020
-  name: chan
-  age: 28
-  nick-name: 비밥
+  api:
+    name: kakao
+    key: 123123
 
-basic:
+external:
   record-year: 2020
-  name: chan
-  age: 28
-  nick-name: 비밥
+  api:
+    name: kakao
+    key: 123123
+
+type-safe:
+  record-year: 2020
+  api:
+    name: kakao
+    key: 123123
+
+problem:
+  value: true
