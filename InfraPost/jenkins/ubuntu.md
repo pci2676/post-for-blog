@@ -272,7 +272,7 @@ FreeStyle Project를 생성하고 `소스 코드 관리` 탭으로 이동해서 
 ![image](https://user-images.githubusercontent.com/13347548/88484105-44dc5580-cfa7-11ea-973d-eeadd98faa84.png)
 
 Webhook을 설정해두면 이제 수신하기로 한 이벤트가 발생할때마다 polling을 이용해서 빌드를 자동화 할 수 있는데  
-master에 있는 브랜치를 모듈별로 배포해야하기 때문에 빌드 유발 항목은 아무것도 체크하지 않았다.
+master 브랜치에 있는 소스 코드를 모듈별로 배포해야하기 때문에 빌드 유발 항목은 아무것도 체크하지 않았다.
 
 #### Build
 
