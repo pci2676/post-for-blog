@@ -1,0 +1,9 @@
+[submodule "Spring-Batch-Lab"]
+	path = Spring-Batch-Lab
+	url = https://github.com/pci2676/Spring-Batch-Lab
+[submodule "Spring-Boot-Lab"]
+	path = Spring-Boot-Lab
+	url = https://github.com/pci2676/Spring-Boot-Lab
+[submodule "Spring-Data-JPA-Lab"]
+	path = Spring-Data-JPA-Lab
+	url = https://github.com/pci2676/Spring-Data-JPA-Lab
