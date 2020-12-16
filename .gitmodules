@@ -7,3 +7,6 @@
 [submodule "Spring-Data-JPA-Lab"]
 	path = Spring-Data-JPA-Lab
 	url = https://github.com/pci2676/Spring-Data-JPA-Lab
+[submodule "Java-Lab"]
+	path = Java-Lab
+	url = https://github.com/pci2676/Java-Lab
