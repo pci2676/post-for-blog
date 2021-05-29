@@ -83,7 +83,7 @@ AWS CLI 명령어의 실행 위치는 `/aws` 이다. `docker-compose.yml` 파일
 #!/bin/bash
 
 # Localstack
-export SERVICES=s3
+export SERVICES=sqs
 export TMPDIR=/private$TMPDIR
 export DEBUG=0
 export DEFAULT_REGION=ap-northeast-2
